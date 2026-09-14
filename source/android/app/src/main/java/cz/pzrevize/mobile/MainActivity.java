@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -194,7 +195,7 @@ public class MainActivity extends Activity {
             navigationRail.setPadding(dp(10), dp(18), dp(10), dp(10));
             navigationRail.setBackgroundColor(Color.WHITE);
             railScroll.addView(navigationRail);
-            workspace.addView(railScroll, new LinearLayout.LayoutParams(dp(204), ViewGroup.LayoutParams.MATCH_PARENT));
+            workspace.addView(railScroll, new LinearLayout.LayoutParams(dp(176), ViewGroup.LayoutParams.MATCH_PARENT));
         }
         workspace.addView(scroll, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         root.addView(workspace, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
@@ -202,8 +203,7 @@ public class MainActivity extends Activity {
 
     private boolean tabletLayout() {
         android.content.res.Configuration config = getResources().getConfiguration();
-        return config.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
-                && config.screenWidthDp >= 840;
+        return config.screenWidthDp >= 720;
     }
 
     private void refreshNavigation() {
@@ -493,13 +493,15 @@ public class MainActivity extends Activity {
     private void revisionCreateDialog(String fixedType) {
         LinearLayout l = form();
         boolean vv = "VNEJSI".equals(fixedType);
-        EditText no = field(l, vv ? "Číslo protokolu VV" : "Číslo revize", "");
+        TextView autoNo = text("Číslo bude přiděleno automaticky při založení.", 13, C_GREEN, true);
+        autoNo.setPadding(dp(2), dp(6), 0, dp(8));
+        l.addView(autoNo);
         Spinner type = vv ? null : spinner(l, "Typ revize", new String[]{"ELEKTRO", "STROJ", "LPS"}, 0);
         EditText obj = field(l, "Objekt / zařízení", "");
         EditText addr = field(l, "Adresa objektu", "");
         new AlertDialog.Builder(this).setTitle(vv ? "Nový VV" : "Nová revize").setView(dialogScroll(l)).setNegativeButton("Zrušit", null).setPositiveButton("Založit", (d, w) -> {
             String selectedType = vv ? "VNEJSI" : String.valueOf(type.getSelectedItem());
-            revisionId = db.addRevision(customerId, s(no), selectedType, s(obj), s(addr));
+            revisionId = db.addRevision(customerId, "", selectedType, s(obj), s(addr));
             push("revision"); showRevision(false);
         }).show();
     }
@@ -560,10 +562,10 @@ public class MainActivity extends Activity {
         List<Db.Row> rows = db.measurements(revisionId);
 
         LinearLayout add1 = new LinearLayout(this); add1.setOrientation(LinearLayout.HORIZONTAL);
-        add1.addView(smallButton("＋ OBVOD", C_ORANGE, Color.BLACK, v -> measurementDialog(null, "CIRCUIT")), new LinearLayout.LayoutParams(0, dp(46), 1));
-        LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0, dp(46), 1); p1.leftMargin = dp(6);
+        add1.addView(smallButton("＋ OBVOD", C_ORANGE, Color.BLACK, v -> measurementDialog(null, "CIRCUIT")), new LinearLayout.LayoutParams(0, dp(40), 1));
+        LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(0, dp(40), 1); p1.leftMargin = dp(6);
         add1.addView(smallButton("＋ BOD", Color.WHITE, C_TEXT, v -> measurementDialog(null, "POINT")), p1);
-        LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(0, dp(46), 1); p2.leftMargin = dp(6);
+        LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(0, dp(40), 1); p2.leftMargin = dp(6);
         add1.addView(smallButton("＋ SPOJITOST", Color.WHITE, C_TEXT, v -> measurementDialog(null, "CONTINUITY")), p2);
         body.addView(add1, marginBottom(dp(6)));
 
@@ -1013,15 +1015,15 @@ public class MainActivity extends Activity {
         String kind = measurementRowType(r);
         boolean child = isTreeChild(kind) && !r.get("parent_key").isEmpty();
         LinearLayout row = new LinearLayout(this); row.setOrientation(LinearLayout.HORIZONTAL); row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(dp(8), dp(6), dp(8), dp(6));
+        row.setPadding(dp(7), dp(3), dp(7), dp(3));
         row.setBackground(rounded(r.id() == selectedMeasurementId ? Color.rgb(255, 243, 220) : Color.WHITE, C_BORDER, 8));
         row.setClickable(true); row.setOnClickListener(v -> { selectedMeasurementId = r.id(); showMeasurements(false); });
         String element = (child ? "↳  " : "") + (r.get("element").isEmpty() ? "Bez označení" : r.get("element"));
-        row.addView(tableCell(element, 13, C_TEXT, true), new LinearLayout.LayoutParams(0, dp(46), 4));
-        row.addView(tableCell(shortRowType(kind), 11, rowTypeColor(kind), true), new LinearLayout.LayoutParams(0, dp(46), 2));
+        row.addView(tableCell(element, 13, C_TEXT, true), new LinearLayout.LayoutParams(0, dp(40), 4));
+        row.addView(tableCell(shortRowType(kind), 11, rowTypeColor(kind), true), new LinearLayout.LayoutParams(0, dp(40), 2));
         String values = valuesText(r); if (values.isEmpty()) values = "—";
-        row.addView(tableCell(values, 11, C_TEXT, false), new LinearLayout.LayoutParams(0, dp(46), 4));
-        row.addView(tableCell(r.bool("done") ? "✓" : "—", 17, r.bool("done") ? C_GREEN : C_MUTED, true), new LinearLayout.LayoutParams(0, dp(46), 1));
+        row.addView(tableCell(values, 11, C_TEXT, false), new LinearLayout.LayoutParams(0, dp(40), 4));
+        row.addView(tableCell(r.bool("done") ? "✓" : "—", 17, r.bool("done") ? C_GREEN : C_MUTED, true), new LinearLayout.LayoutParams(0, dp(40), 1));
         return row;
     }
 
@@ -1094,7 +1096,7 @@ public class MainActivity extends Activity {
                 .setNegativeButton("Zrušit", null).setPositiveButton("Odstranit", (d, w) -> {
                     db.deleteInfluenceRoom(revisionId, room.id()); selectedRoomId = 0; showInfluences(false);
                 }).show()), marginBottom(dp(12)));
-        detail.addView(smallButton("＋ PŘIDAT KÓD VLIVU", C_ORANGE, C_TEXT, v -> influenceItemDialog(room.id(), null)), marginBottom(dp(12)));
+        detail.addView(smallButton("☑ VYBRAT VNĚJŠÍ VLIVY", C_ORANGE, C_TEXT, v -> influenceChecklistDialog(room.id())), marginBottom(dp(12)));
         for (Db.Row item : db.influenceItems(room.id())) {
             LinearLayout card = card();
             card.addView(text(item.get("code") + "  " + item.get("description"), 16, C_TEXT, true), marginBottom(dp(6)));
@@ -1120,12 +1122,54 @@ public class MainActivity extends Activity {
                 }).show();
     }
 
+    private void influenceChecklistDialog(long roomId) {
+        List<Db.Row> existing = db.influenceItems(roomId);
+        Map<String, Db.Row> byCode = new LinkedHashMap<>();
+        for (Db.Row r : existing) byCode.put(r.get("code").toUpperCase(Locale.ROOT), r);
+
+        String[] labels = new String[InfluenceCatalog.ITEMS.length];
+        boolean[] checked = new boolean[InfluenceCatalog.ITEMS.length];
+        for (int i = 0; i < InfluenceCatalog.ITEMS.length; i++) {
+            String[] x = InfluenceCatalog.ITEMS[i];
+            labels[i] = x[2] + "  •  " + x[3];
+            checked[i] = byCode.containsKey(x[2].toUpperCase(Locale.ROOT));
+        }
+
+        AlertDialog dlg = new AlertDialog.Builder(this)
+                .setTitle("Vnější vlivy – checklist")
+                .setMultiChoiceItems(labels, checked, (d, which, isChecked) -> checked[which] = isChecked)
+                .setNegativeButton("Zrušit", null)
+                .setPositiveButton("Uložit výběr", null)
+                .create();
+        dlg.setOnShowListener(x -> dlg.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            Set<String> selected = new HashSet<>();
+            for (int i = 0; i < InfluenceCatalog.ITEMS.length; i++) {
+                String[] item = InfluenceCatalog.ITEMS[i];
+                String code = item[2].toUpperCase(Locale.ROOT);
+                if (checked[i]) {
+                    selected.add(code);
+                    Db.Row old = byCode.get(code);
+                    db.saveInfluenceItem(roomId, old == null ? 0 : old.id(), item[2], item[3], item[4]);
+                }
+            }
+            for (Db.Row old : existing) {
+                String code = old.get("code").toUpperCase(Locale.ROOT);
+                boolean catalogCode = false;
+                for (String[] item : InfluenceCatalog.ITEMS) if (item[2].equalsIgnoreCase(code)) { catalogCode = true; break; }
+                if (catalogCode && !selected.contains(code)) db.deleteInfluenceItem(roomId, old.id());
+            }
+            dlg.dismiss();
+            showInfluences(false);
+        }));
+        dlg.show();
+    }
+
     private void influenceItemDialog(long roomId, Db.Row row) {
         LinearLayout f = form();
         EditText code = field(f, "Kód vlivu (např. BA4)", row == null ? "" : row.get("code"));
         EditText description = fieldMulti(f, "Klasifikace / zdůvodnění", row == null ? "" : row.get("description"), 3);
         EditText measure = fieldMulti(f, "Požadované opatření", row == null ? "" : row.get("measure"), 4);
-        new AlertDialog.Builder(this).setTitle(row == null ? "Vnější vliv" : "Upravit vnější vliv").setView(dialogScroll(f))
+        new AlertDialog.Builder(this).setTitle(row == null ? "Vnější vliv – ruční doplnění" : "Upravit vnější vliv").setView(dialogScroll(f))
                 .setNegativeButton("Zrušit", null).setPositiveButton("Uložit", (d, w) -> {
                     if (s(code).isEmpty()) { Toast.makeText(this, "Vyplň kód vlivu.", Toast.LENGTH_SHORT).show(); return; }
                     db.saveInfluenceItem(roomId, row == null ? 0 : row.id(), s(code).toUpperCase(), s(description), s(measure));
@@ -1443,6 +1487,7 @@ public class MainActivity extends Activity {
                 "Synchronizovat nyní (čeká " + pending + " změn)",
                 "Otestovat spojení s NAS",
                 "Nastavení NAS",
+                "Pracovat offline – vypnout automatický sync",
                 "Záloha / přenos dat"
         };
         AlertDialog.Builder b = new AlertDialog.Builder(this).setTitle(title);
@@ -1453,7 +1498,11 @@ public class MainActivity extends Activity {
             if (which == 0) startSync(true, false);
             else if (which == 1) testServer();
             else if (which == 2) syncSettingsDialog();
-            else backupMenu();
+            else if (which == 3) {
+                SyncClient.prefs(this).edit().putBoolean("auto_sync", false).apply();
+                Toast.makeText(this, "Automatická synchronizace vypnuta. Práce pokračuje offline.", Toast.LENGTH_LONG).show();
+                if ("home".equals(screen)) showHome(false);
+            } else backupMenu();
         }).setNegativeButton("Zavřít", null).show();
     }
 
@@ -1501,9 +1550,13 @@ public class MainActivity extends Activity {
             if (showResult) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                         .setTitle(r.ok ? (r.conflicts > 0 ? "Synchronizace s konfliktem" : "Synchronizace dokončena") : "Synchronizace selhala")
-                        .setMessage(r.message + ((r.ok && r.conflicts == 0) ? "" : "\n\nPráce může pokračovat offline. Neodeslané změny zůstávají v tabletu a další synchronizace je zkusí znovu."))
-                        .setPositiveButton("Pokračovat offline", null);
-                if (!r.ok || r.conflicts > 0) dialog.setNeutralButton("Nastavení NAS", (d,w) -> syncSettingsDialog());
+                        .setMessage(r.message + ((r.ok && r.conflicts == 0) ? "" : "\n\nMůžeš ihned pokračovat offline. Lokální data se nemažou."))
+                        .setPositiveButton("Zavřít a pokračovat", null)
+                        .setCancelable(true);
+                if (!r.ok || r.conflicts > 0) {
+                    dialog.setNeutralButton("Nastavení NAS", (d,w) -> syncSettingsDialog());
+                    dialog.setNegativeButton("Zkusit znovu", (d,w) -> startSync(true, false));
+                }
                 dialog.show();
             }
             if ("home".equals(screen) && !isFinishing()) showHome(false);

@@ -312,7 +312,27 @@ public class Db extends SQLiteOpenHelper {
         return r;
     }
 
+    public String nextRevisionNumber(String type) {
+        String prefix = "VNEJSI".equalsIgnoreCase(type) ? "VV" : "RZ";
+        String year = new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date());
+        int max = 0;
+        Cursor c = getReadableDatabase().rawQuery("SELECT revision_no FROM revisions WHERE revision_no IS NOT NULL AND revision_no<>''", null);
+        while (c.moveToNext()) {
+            String no = c.getString(0);
+            if (no == null) continue;
+            String normalized = no.trim().toUpperCase(Locale.ROOT);
+            if (!normalized.startsWith(prefix + "-" + year + "-")) continue;
+            int pos = normalized.lastIndexOf('-');
+            if (pos >= 0 && pos + 1 < normalized.length()) {
+                try { max = Math.max(max, Integer.parseInt(normalized.substring(pos + 1))); } catch (Exception ignored) { }
+            }
+        }
+        c.close();
+        return String.format(Locale.ROOT, "%s-%s-%03d", prefix, year, max + 1);
+    }
+
     public long addRevision(long customerId, String no, String type, String objectName, String objectAddress) {
+        if (no == null || no.trim().isEmpty()) no = nextRevisionNumber(type);
         ContentValues v = new ContentValues();
         v.put("customer_id", customerId); v.put("revision_no", no); v.put("revision_type", type); v.put("object_name", objectName); v.put("object_address", objectAddress); v.put("status", "Rozpracovaná"); v.put("updated_at", now());
         long id = getWritableDatabase().insert("revisions", null, v);
