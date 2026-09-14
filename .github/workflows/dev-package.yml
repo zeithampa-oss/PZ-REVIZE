@@ -1,0 +1,33 @@
+name: Dev source package
+
+on:
+  push:
+    branches: [fix/measurement-instruments-sync-rc]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/measurement-instruments-sync-rc
+      - name: Prepare NAS source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf source/nas
+          mkdir -p source/nas
+          unzip -q PZ_REVIZE_NAS_SERVER_1.0.2_SOURCE.zip -d source/nas
+      - name: Pack current sources
+        shell: bash
+        run: |
+          zip -qr PZ_REVIZE_DEV_SOURCES.zip source tools .github/workflows/build.yml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_DEV_SOURCES
+          path: PZ_REVIZE_DEV_SOURCES.zip
+          if-no-files-found: error
