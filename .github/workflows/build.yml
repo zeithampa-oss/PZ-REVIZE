@@ -1,4 +1,4 @@
-name: Extract PZ-REVIZE sources
+name: Build fixed PZ-REVIZE
 
 on:
   push:
@@ -9,36 +9,94 @@ permissions:
   contents: write
 
 jobs:
-  extract:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: fix/tablet-vv-sync-numbering
-      - name: Extract source archives into branch
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ -d source/android ] && [ -d source/windows ]; then
-            echo "Sources already extracted."
-            exit 0
-          fi
-          rm -rf source
-          mkdir -p source/android source/windows
-          unzip -q PZ_REVIZE_ANDROID_0.5.1_TABLET_SOURCE.zip -d source/android
-          cat PZ_REVIZE_WINDOWS_0.4.35_SOURCE.part.* > /tmp/PZ_REVIZE_WINDOWS_SOURCE.zip
-          unzip -q /tmp/PZ_REVIZE_WINDOWS_SOURCE.zip -d source/windows
-          find source -type d -name __pycache__ -prune -exec rm -rf {} + || true
-          find source -type f \( -name '*.pyc' -o -name '*.db' -o -name '*.db-shm' -o -name '*.db-wal' \) -delete || true
-      - name: Commit extracted sources
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Apply tablet, VV, numbering and sync fixes
+        run: python tools/apply_tablet_fixes.py
+      - name: Commit fixed sources
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add source
+          git add source/android tools/apply_tablet_fixes.py
           if git diff --cached --quiet; then
-            echo "Nothing to commit."
+            echo "No new source changes."
           else
-            git commit -m "Rozbalení zdrojů pro opravy tabletu, VV a synchronizace"
+            git commit -m "Opravy tabletu: VV checklist, automatické číslování, měření a sync"
             git push origin HEAD:fix/tablet-vv-sync-numbering
           fi
+
+  android:
+    name: Android 0.5.2 tablet APK
+    needs: patch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tablet-vv-sync-numbering
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Build APK
+        working-directory: source/android
+        run: gradle --no-daemon clean assembleDebug
+      - name: Name APK
+        working-directory: source/android
+        run: cp app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG
+          path: source/android/PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG.apk
+          if-no-files-found: error
+
+  windows:
+    name: Windows 0.4.36 portable
+    needs: patch
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tablet-vv-sync-numbering
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: source/windows/requirements-build.txt
+      - name: Install dependencies
+        working-directory: source/windows
+        run: python -m pip install -r requirements-build.txt
+      - name: Run tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Build EXE
+        shell: cmd
+        working-directory: source/windows
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir --windowed
+          --collect-submodules "reportlab.graphics.barcode"
+          --hidden-import "reportlab.graphics.barcode.code93"
+          --name "PZ_REVIZE_WINDOWS_0.4.36"
+          --icon "pzrevize\resources\pz_revize.ico"
+          --add-data "pzrevize\resources;pzrevize\resources"
+          app.py
+      - name: Create portable ZIP
+        shell: pwsh
+        working-directory: source/windows
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.36/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.36_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip
+          if-no-files-found: error
