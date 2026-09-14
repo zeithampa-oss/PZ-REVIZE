@@ -1,0 +1,136 @@
+name: Build PZ-REVIZE 0.4.37 / 0.5.3 / NAS 1.0.3
+
+on:
+  push:
+    branches: [fix/measurement-instruments-sync-rc]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android_nas:
+    name: Android 0.5.3 + NAS 1.0.3 + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/measurement-instruments-sync-rc
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Prepare current NAS source and apply release patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf source/nas
+          mkdir -p source/nas
+          unzip -q PZ_REVIZE_NAS_SERVER_1.0.2_SOURCE.zip -d source/nas
+          cat tools/final_fix.patch.gz.b64.part.* > /tmp/final_fix.b64
+          python - <<'PY'
+          import base64,gzip,pathlib
+          raw=base64.b64decode(pathlib.Path('/tmp/final_fix.b64').read_bytes())
+          pathlib.Path('/tmp/final_fix.patch').write_bytes(gzip.decompress(raw))
+          PY
+          git apply --check /tmp/final_fix.patch
+          git apply /tmp/final_fix.patch
+      - name: Run Windows Python tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Run NAS tests
+        working-directory: source/nas
+        run: python -m unittest discover -s tests -v
+      - name: Compile Python sources
+        run: python -m py_compile source/windows/app.py source/windows/pzrevize/database.py source/windows/pzrevize/nas_sync.py source/nas/server.py source/nas/pz_mobile_server.py
+      - name: Build Android APK
+        working-directory: source/android
+        run: gradle --no-daemon clean assembleDebug
+      - name: Name Android APK
+        run: cp source/android/app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.3_TABLET_DEBUG.apk
+      - name: Pack NAS 1.0.3
+        shell: bash
+        run: |
+          find source/nas -type d -name __pycache__ -prune -exec rm -rf {} + || true
+          find source/nas -type f -name '*.pyc' -delete || true
+          (cd source/nas && zip -qr ../../PZ_REVIZE_NAS_SERVER_1.0.3.zip .)
+      - name: Pack patched sources
+        shell: bash
+        run: |
+          find source -type d -name __pycache__ -prune -exec rm -rf {} + || true
+          find source -type f -name '*.pyc' -delete || true
+          (cd source/android && zip -qr ../../PZ_REVIZE_ANDROID_0.5.3_SOURCE.zip .)
+          (cd source/windows && zip -qr ../../PZ_REVIZE_WINDOWS_0.4.37_SOURCE.zip .)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_MOBILE_0.5.3_TABLET_DEBUG
+          path: PZ_REVIZE_MOBILE_0.5.3_TABLET_DEBUG.apk
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_NAS_SERVER_1.0.3
+          path: PZ_REVIZE_NAS_SERVER_1.0.3.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_SOURCES_0.4.37_0.5.3
+          path: |
+            PZ_REVIZE_ANDROID_0.5.3_SOURCE.zip
+            PZ_REVIZE_WINDOWS_0.4.37_SOURCE.zip
+          if-no-files-found: error
+
+  windows:
+    name: Windows 0.4.37 portable
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/measurement-instruments-sync-rc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: source/windows/requirements-build.txt
+      - name: Prepare current NAS source and apply release patch
+        shell: pwsh
+        run: |
+          if (Test-Path source/nas) { Remove-Item source/nas -Recurse -Force }
+          Expand-Archive -Path PZ_REVIZE_NAS_SERVER_1.0.2_SOURCE.zip -DestinationPath source/nas -Force
+          $parts = Get-ChildItem tools/final_fix.patch.gz.b64.part.* | Sort-Object Name
+          $text = ($parts | ForEach-Object { Get-Content $_.FullName -Raw }) -join ''
+          Set-Content -Path final_fix.b64 -Value $text -NoNewline
+          python -c "import base64,gzip,pathlib; pathlib.Path('final_fix.patch').write_bytes(gzip.decompress(base64.b64decode(pathlib.Path('final_fix.b64').read_bytes())))"
+          git apply --check final_fix.patch
+          git apply final_fix.patch
+      - name: Install build dependencies
+        working-directory: source/windows
+        run: python -m pip install -r requirements-build.txt
+      - name: Run Windows tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Build EXE
+        shell: cmd
+        working-directory: source/windows
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir --windowed
+          --collect-submodules "reportlab.graphics.barcode"
+          --hidden-import "reportlab.graphics.barcode.code93"
+          --name "PZ_REVIZE_WINDOWS_0.4.37"
+          --icon "pzrevize\resources\pz_revize.ico"
+          --add-data "pzrevize\resources;pzrevize\resources"
+          app.py
+      - name: Create portable ZIP
+        shell: pwsh
+        working-directory: source/windows
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.37/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.37_PORTABLE.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.37_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.37_PORTABLE.zip
+          if-no-files-found: error
