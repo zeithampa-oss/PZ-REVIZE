@@ -1,0 +1,14 @@
+PZ-REVIZE 0.4.6 – ZMĚNY
+=========================
+
+ZÁVADY – VÍCE NORMOVÝCH ODKAZŮ
+- jedna závada může mít neomezený počet norem / předpisů
+- u každého odkazu se zadává článek / ustanovení a citace / normový požadavek
+- odkazy lze přidávat, upravovat, odebrat a změnit jejich pořadí
+- první odkaz se zrcadlí do starých polí Norma a Článek kvůli zpětné kompatibilitě
+- staré závady se při migraci převedou na strukturovaný první odkaz
+- PDF zobrazuje všechny odkazy a citace přímo u závady
+- závadovník umožňuje upravovat více normových odkazů
+- Excel import/export přenáší více odkazů ve sloupci NORMOVÉ ODKAZY
+
+Současně je závadovník sjednocen na závažnost C1 / C2 / C3.

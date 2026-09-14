@@ -1,0 +1,6 @@
+PZ-REVIZE 0.4.18
+
+- Fotodokumentace závad v PDF je nově uspořádána do mřížky 2 × 2.
+- Na jednu stránku se vejdou až čtyři fotografie.
+- Fotografie zachovávají původní poměr stran a nejsou deformované.
+- U každé fotografie zůstává číslo závady, text závady a popisek.

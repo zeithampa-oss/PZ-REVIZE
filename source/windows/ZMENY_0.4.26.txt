@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.26
+
+- Titulní strana VV: kompaktnější pole komise.
+- Obecné: výchozí editovatelný obsah podle vzorového protokolu, strany 2-5, včetně vzorců.
+- Normy: jednorázově se předvyplní všechny normy a předpisy ze vzorového protokolu.
+- Nová hlavní záložka Popis pro vlastní popis posuzovaného objektu.
+- Podklady zůstávají samostatnou záložkou.
+- Dialog místnosti má dvě karty: Popis a Vnější vlivy. Popis má velké textové pole, odrážky a číslování.
+- PDF: popis místnosti se tiskne samostatně nad tabulkou, ne jako textový řádek uvnitř tabulky.

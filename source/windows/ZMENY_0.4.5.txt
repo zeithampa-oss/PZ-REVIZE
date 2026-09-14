@@ -1,0 +1,12 @@
+PZ-REVIZE 0.4.5 – ZMĚNY
+========================
+
+- Pole Závažnost používá přímo hodnoty C1 / C2 / C3.
+- Samostatná Kategorie závady byla z dialogu závady odstraněna.
+- C1 – Nebezpečný stav.
+- C2 – Potenciálně nebezpečný stav.
+- C3 – doporučení.
+- Vysvětlení kategorií je zobrazeno pod tabulkou závad v programu a pod tabulkou závad v PDF.
+- Fotodokumentace používá u čísla závady stejnou hodnotu závažnosti C1/C2/C3.
+- Databázově zůstává legacy pole defect_class zachováno a zrcadlí závažnost kvůli zpětné kompatibilitě.
+- Při otevření starších dat 0.4.4 se platná hodnota C1/C2/C3 z původního pole bezpečně převede do závažnosti.

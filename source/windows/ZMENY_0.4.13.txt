@@ -1,0 +1,14 @@
+PZ-REVIZE 0.4.13
+=================
+
+- Zapracován metadata katalog 194 dodaných souborů norem a předpisů (stav k 9. 9. 2026).
+- Základní číselník obsahuje 129 jedinečných použitelných vydání; binární duplicity, poškozené soubory a materiály mimo katalog se nenabízejí jako normy.
+- Běžný výběr zobrazuje pouze ověřené platné a souběžně platné dokumenty.
+- Historické a neověřené dokumenty lze zobrazit samostatnou volbou; před jejich vložením do revize se zobrazí upozornění.
+- Edice stejné normy jsou vedeny odděleně, aby bylo možné zvolit předpis podle stáří posuzovaného zařízení.
+- Aktualizace databáze je nedestruktivní a nemění normové snímky uložené ve starších revizních zprávách.
+- V databázi zůstává i evidence zdrojového souboru, kontrolního součtu, zjištěného stavu a oficiálního odkazu pro další ověřování.
+
+UPOZORNĚNÍ
+----------
+Katalog je pracovní pomůcka. Položky označené „Neověřena“ je nutné před použitím ověřit v aktuálním oficiálním zdroji. Texty norem nejsou součástí programu.

@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.8 – ZMĚNY
+
+- Doplněny samostatné údaje o jističi: jmenovitý proud In [A] a charakteristika B / C / D.
+- Doplněn volitelný ruční vypínací proud Ia pro nastavitelné jističe a jiné ochranné prvky.
+- Doplněno U0 a bezpečnostní koeficient km (výchozí 1,5).
+- Automatická mez impedance pro měřený bod: Zsm,max = U0 / (km × Ia).
+- Automatické Vyhovuje / Nevyhovuje po zadání Zs.
+- PDF tiskne vysvětlení vztahu Zs × Ia ≤ U0 a km × Zsm × Ia ≤ U0.
+- Staré databáze se rozšíří automaticky bez mazání existujících měření.

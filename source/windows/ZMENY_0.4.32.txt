@@ -1,0 +1,40 @@
+PZ-REVIZE 0.4.32
+=================
+
+VNĚJŠÍ VLIVY – NORMOVÝ AUDIT
+- Pracovní číselník VV byl znovu auditován podle ČSN 33 2000-5-51 ed.3 + Z1 + Z2,
+  konsolidované vydání 07/2022, příloha ZA, tabulka ZA.1.
+- Opraveny normální třídy a výchozí profily: AA4/AA5, AB4/AB5, AQ2 a BC2 jsou
+  v příslušném kontextu vedeny jako normální; výchozí běžný profil používá AQ2 a BC2.
+- Kódy AM používají normový zápis s pomlčkou (např. AM-1-2).
+- Katalog BE používá aktuální skupiny BE1, BE2, BE3 a BE4. Staré pracovní kódy
+  BE2N1...BE3N3 se při načtení převedou na aktuální skupiny.
+- Opatření / požadavky AA–CB byly přepracovány podle aktuální tabulky ZA.1.
+  Texty ze staršího národního dodatku, které nejsou v konsolidovaném vydání 2022,
+  byly odstraněny z normových návrhů.
+- AJ a BB jsou ve výstupu uvedeny jako položky bez samostatné třídy ("zvažuje se").
+- Každý zvolený vliv vyžadující opatření má samostatně editovatelný text pro konkrétní místnost.
+
+PRÁCE S MÍSTNOSTMI VV
+- Přidáno Kopírovat místnost (Ctrl+D). Kopíruje VV, popis i individuální opatření a
+  otevře kopii k úpravě čísla / názvu.
+- V editoru místnosti lze aktuální místnost uložit jako vlastní rychlý profil.
+  Profil ukládá VV, doplňková opatření a individuální opatření; neukládá název místnosti.
+- Vlastní rychlé profily jsou trvale dostupné v dalších protokolech VV a lze je smazat.
+
+OVLÁDÁNÍ PROGRAMU
+- Sjednoceno posouvání kolečkem myši v celém programu. Kolečko posouvá formuláře,
+  seznamy, tabulky a textové oblasti podle prvku pod kurzorem; Shift+kolečko slouží
+  pro vodorovné posouvání tam, kde je k dispozici.
+- Combobox ani Spinbox se kolečkem při pouhém přejetí omylem nepřepínají.
+
+KOMPATIBILITA
+- Protože dosavadní VV jsou testovací, nové profily a nové místnosti používají již
+  přímo aktuální číselník. Při načtení starého testovacího záznamu se známé staré
+  kódy automaticky normalizují na současný zápis.
+
+KONTROLA
+- 28 automatických testů: OK.
+- GUI smoke test rychlých profilů a globálního kolečka: OK.
+- Kontrolní PDF VV bylo vyrenderováno a vizuálně ověřeno; podrobná tabulka i
+  souhrnná matice AA–CB se vejdou do tiskové plochy A4.

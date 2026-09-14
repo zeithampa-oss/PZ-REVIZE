@@ -1,0 +1,10 @@
+PZ-REVIZE 0.4.14
+=================
+
+- Tlačítko „+ Měření“ otevírá pouze jednu sjednocenou kompletní tabulku.
+- Kompletní tabulka obsahuje také měření L1–PEN, L2–PEN a L3–PEN.
+- Proudový chránič typu RCBO lze evidovat jako kombinovaný chránič s parametry RCD i jističe.
+- U RCBO lze v jednom formuláři zadat napětí, impedanci Zs, mez Zs, Ik, izolační odpor Riso a dílčí vyhodnocení.
+- Mez impedance se u RCBO umí dopočítat z proudu, charakteristiky, U0 a bezpečnostního koeficientu stejně jako u běžného obvodu.
+- Celkový stav RCBO se skládá z výsledku RCD, impedance a izolace; nevyhovující dílčí zkouška nastaví nevyhovující celek.
+- Údaje RCBO o impedanci a izolaci se zobrazují v přehledu i v PDF revizní zprávě.

@@ -1,0 +1,30 @@
+PZ-REVIZE 0.3.2 - změny
+
+1. Struktura měření
+- RCD je samostatná nadřazená položka.
+- Obvody lze řadit pod konkrétní RCD.
+- Spojitost / přechodový odpor je samostatná položka měření.
+- Lze vložit prázdný řádek a položky přesouvat nahoru/dolů.
+- Kopie staré revize zachová strukturu a technické údaje, ale odstraní naměřené hodnoty a výsledky.
+
+2. Proudové chrániče
+- druh přístroje RCCB / RCBO
+- typ citlivosti AC / A / F / B / B+
+- časové provedení a počet pólů
+- In a IΔn
+- dynamická pole měření podle typu
+- 20-50 % IΔn, 5x IΔn, TEST
+
+3. Výstupní zpráva
+- jednotná šířka tabulek 190 mm
+- strukturovaná tabulka měření RCD -> obvody
+- samostatně zvýrazněná spojitost
+- zakulacené nadpisové bloky a celkový posudek
+- silnější práce s tučným písmem a hierarchií
+- zkušební proud u SPD / varistorů
+
+4. Revizní technik
+- ve zprávě se tisknou kompletní údaje RT
+- doplněna firma / obchodní jméno
+- rozsah a platnost osvědčení
+- rozsah oprávnění

@@ -1,0 +1,13 @@
+PZ-REVIZE 0.3.7 – NAS / VPN / synchronizace
+============================================
+
+- Opravena chyba Windows [WinError 32] při vytváření synchronizačního ZIPu. Dočasné soubory už nezůstávají otevřené po tempfile.mkstemp().
+- Do levého panelu přibyla trvalá indikace stavu NAS: online LAN, online VPN, nedostupný, nenastavený; stav se pravidelně obnovuje.
+- NAS dialog je větší a responzivnější; doplněn režim Automaticky / LAN / VPN.
+- Lze zadat samostatnou LAN a VPN adresu. V automatickém režimu se zkouší nejprve LAN a poté VPN.
+- VPN režim je vhodný např. pro Tailscale, WireGuard nebo OpenVPN. API klíč zůstává povinný.
+- Tlačítko „Stáhnout kompletní DB“ stáhne celý centrální stav NAS do pracovní databáze právě spuštěného PC, včetně příloh, fotografií, razítka a podpisu.
+- Před stažením vzniká kompletní lokální ZIP záloha. Po stažení je ověřena integrita skutečné lokální pracovní databáze.
+- Stažení je blokováno, pokud je otevřené okno revize, aby stará data z otevřeného editoru nemohla přepsat čerstvě staženou DB.
+- Po stažení program zobrazí přesnou cestu k lokální DB a počty revizí/zákazníků.
+- Upraveno centrování dialogů a Windows DPI awareness pro monitory se škálováním 125/150 %, aby se okna neposouvala mimo pracovní plochu.

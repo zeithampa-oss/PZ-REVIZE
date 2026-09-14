@@ -1,0 +1,38 @@
+PZ-REVIZE 0.4.33
+=================
+
+BEZPEČNÁ AUTOMATICKÁ SYNCHRONIZACE NAS
+- Synchronizace se nyní spouští automaticky po startu programu, průběžně během chodu
+  a po každém uložení revize.
+- Při ukončení programu proběhne poslední synchronizace ještě před zavřením aplikace.
+- Zásadní bezpečnostní změna: vyšší generace NAS už sama o sobě nikdy nezpůsobí
+  automatické přepsání lokální databáze.
+- Před jakýmkoli stažením se porovná logický obsah lokální a NAS databáze.
+- Pokud lokální PC obsahuje revize navíc a NAS je jejich podmnožinou, lokální stav se
+  odešle přímo proti aktuální generaci NAS. Program už nevyžaduje nebezpečné „nejdřív stáhnout NAS“.
+- Pokud je naopak NAS bezpečnou nadmnožinou lokálního stavu a není otevřen editor revize,
+  lze novější stav automaticky stáhnout.
+- Pokud oba počítače obsahují rozdílné změny stejné revize nebo navzájem odlišná data,
+  synchronizace se zastaví jako KONFLIKT. Nic se automaticky nemaže ani nepřepisuje.
+- Při konfliktu nebo nedostupném NAS při zavírání programu vznikne lokální kompletní ZIP záloha.
+  Uživatel může ukončení zrušit a zůstat v programu.
+- Ruční tlačítko „Synchronizovat teď“ používá stejnou bezpečnou logiku.
+- „Stáhnout kompletní DB“ zůstává pouze vědomá ruční obnova a je v dialogu výslovně označena
+  jako operace nahrazující lokální stav, nikoli jako řešení běžného konfliktu.
+
+STROJNÍ ZAŘÍZENÍ – KLASICKÁ ELEKTRICKÁ MĚŘENÍ
+- Do karty měření strojního zařízení byla přidána stejná klasická měření jako u EI:
+  + Obvod, + Měřicí bod, + Spojitost a + RCD / RCBO.
+- Klasický obvod používá údaje o jištění, charakteristice B/C/D, Ia, vedení a automatickém limitu Zs.
+- Měřicí body umožňují U, Riso, Zs, mez Zs, Ik a automatické vyhodnocení.
+- Spojitost má vlastní bod/popis, naměřený odpor, limit a vyhodnocení.
+- RCD/RCBO používá specializovaný formulář se stejnými zkouškami jako modul EI;
+  u RCBO lze zadat také klasické podřízené měřicí body jističové části.
+- Klasické řádky jsou součástí stromu strojního měření, lze je upravovat, přesouvat a mazat.
+- PDF strojní revize tiskne klasické hodnoty přímo v kapitole „Zkoušení, měření a funkční zkoušky“.
+- Databázová migrace doplní potřebné sloupce nedestruktivně i do existující databáze.
+
+KONTROLA
+- 37 automatických testů: OK.
+- GUI smoke test modulu strojních zařízení: OK.
+- Kontrolní PDF strojní revize s klasickým obvodem a měřicím bodem: OK, bez ořezu tabulky.

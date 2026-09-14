@@ -1,0 +1,10 @@
+PZ-REVIZE 0.4.30 – body prohlídky EI
+
+- Do katalogu prohlídky byly doplněny body z dodané vzorové revize:
+  • NV č. 190/2022 Sb., příloha č. 1, část A – body a) až k).
+  • ČSN 33 2000-6 ed. 2, čl. 6.4.2 / příloha F – body a) až p).
+- Nová elektrická revize dostane tyto body automaticky s výchozím výsledkem VYHOVUJE.
+- U existující revize je lze jedním kliknutím doplnit tlačítkem „Doplnit body EI“.
+- Již vložené body se neduplikují.
+- PDF za tabulkou prohlídky nově uvádí souhrnný výsledek prohlídky.
+- Jednotlivé body nadále lze upravit, označit VYHOVUJE/NEVYHOVUJE/NEPROVEDENO a případně převést na závadu.

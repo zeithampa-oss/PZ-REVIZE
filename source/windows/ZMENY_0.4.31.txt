@@ -1,0 +1,8 @@
+PZ-REVIZE 0.4.31 – VV tabulka a okna
+
+- PDF protokolu VV: podrobná tabulka i souhrnná matice AA–CB mají bezpečný vnitřní okraj a jsou centrované; tabulka už nepřesahuje pravý okraj A4.
+- Souhrnná matice počítá šířky sloupců z reálné tiskové šířky dokumentu místo pevného součtu 190 mm.
+- Modální okna respektují pracovní plochu Windows (bez hlavního panelu / lišty Start), takže spodní tlačítka zůstávají dostupná i na 1366×768 a při vyšším DPI.
+- Dialog místnosti VV se otevírá maximalizovaný v pracovní ploše systému; spodní lišta zůstává pevná a dostupná.
+- ESC zavírá dialogová okna; F11 přepíná celou obrazovku. V editoru revize zůstává ESC bezpečné zavření s dotazem na uložení.
+- V dialogu místnosti VV je viditelné tlačítko „Celá obrazovka (F11)“.

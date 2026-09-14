@@ -1,0 +1,11 @@
+PZ-REVIZE 0.3.5
+================
+
+- Přidáno hlídání termínu příští revize.
+- U každé revizní zprávy / zakázky lze hlídání samostatně zapnout nebo vypnout.
+- Vypnutí hlídání nemaže datum příští revize a nemění tisk revizní zprávy; pouze vyřadí položku z přehledu termínů a upozornění.
+- Nová stránka Termíny zobrazuje hlídané termíny, počet zbývajících dní a stavy PO TERMÍNU / DNES / DO 30 DNÍ / DO 90 DNÍ / NAPLÁNOVÁNO.
+- Na stránce Termíny lze volitelně zobrazit i revize s vypnutým hlídáním a hlídání rychle zapnout/vypnout.
+- Seznam revizí obsahuje nový sloupec Hlídání a rychlé tlačítko Hlídání termínu.
+- Přehled „Termíny k řešení (90 dní)“ počítá pouze hlídané revize a zahrnuje také revize po termínu.
+- Při převzetí/kopii staré revize je hlídání nové revize standardně zapnuté, ale nový termín je prázdný do jeho zadání.

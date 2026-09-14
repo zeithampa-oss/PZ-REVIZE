@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.28 – vnější vlivy
+
+- Opravena chyba, kvůli které nešlo po úpravě checklistu uložit místnost (chybné interní pole poznámky).
+- Každý abnormální vnější vliv má vlastní editovatelné opatření přímo v editoru místnosti.
+- Opatření lze upravit dvojklikem nebo tlačítkem a kdykoli vrátit na normový/pracovní návrh.
+- Opatření se ukládají samostatně pro konkrétní místnost a konkrétní VV.
+- PDF znovu obsahuje kompletní matici AA–CB po místnostech, včetně sloupce Opatření.
+- Detailní výklad VV zůstává zachován; popis místnosti je mimo tabulku.
+- XLSX export obsahuje kompletní AA–CB, opatření ke všem abnormálním VV, doplňková opatření, stav, popis prostoru a poznámku.

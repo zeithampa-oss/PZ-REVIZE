@@ -1,0 +1,36 @@
+AUDIT SYNCHRONIZACE NAS – PZ-REVIZE 0.4.33
+===========================================
+
+CÍL
+- Zabránit opakování ztráty lokálně vytvořených revizí při konfliktu generací NAS.
+- Synchronizace musí být offline-first: lokální pracovní DB se nesmí automaticky nahradit jen proto,
+  že server hlásí vyšší číslo generace.
+
+BEZPEČNOSTNÍ PRAVIDLA
+1. Start programu: automatická synchronizace po inicializaci UI.
+2. Běh programu: periodická synchronizace po 60 s a rychlá synchronizace po uložení revize.
+3. Ukončení: poslední synchronizace proběhne po bezpečném uzavření/uložení otevřených revizí.
+4. Vyšší generace NAS není povolení ke stažení. Nejdřív se stáhne pouze dočasná kopie pro porovnání.
+5. Lokální nadmnožina -> PUSH přímo proti aktuální generaci NAS, bez předchozího PULL.
+6. NAS nadmnožina -> PULL jen tehdy, když lokální stav neobsahuje nic navíc a není otevřen editor revize.
+7. Divergentní změny -> KONFLIKT. Žádná strana není automaticky přepsána.
+8. Při konfliktu/offline stavu během ukončování se vytvoří kompletní lokální ZIP záloha.
+9. Ruční „Stáhnout kompletní DB“ zůstává vědomá obnova a není používána automatickým synchronizačním algoritmem.
+10. Serverové expected_generation zůstává aktivní jako ochrana proti závodu: pokud NAS změní jiný klient mezi
+    porovnáním a odesláním, server PUSH odmítne a lokální DB zůstane nedotčena.
+
+POROVNÁNÍ
+- Revize se porovnávají podle čísla revize a logického otisku vlastního záznamu + všech podřízených tabulek.
+- Cesty k přílohám se pro porovnání normalizují na název souboru, protože lokální DB používá absolutní cestu
+  a NAS snapshot relativní attachments/... cestu.
+- Globální tabulky (zákazníci, objekty, zakázky, katalogy, přístroje, profil RT, naučené hodnoty) jsou součástí
+  kontroly nadmnožiny. Při nejednoznačné změně se algoritmus raději zastaví jako konflikt.
+
+TESTY
+- local_superset: lokální revize navíc -> PASS
+- remote_superset: NAS revize navíc -> PASS
+- změna stejné revize na obou stranách -> konflikt -> PASS
+- bezpečný sync lokální nadmnožiny nikdy nevolá PULL -> PASS
+- otevřený editor odloží bezpečný PULL -> PASS
+- konflikt nevolá PUSH ani PULL -> PASS
+- celkem automatických testů programu: 37 PASS

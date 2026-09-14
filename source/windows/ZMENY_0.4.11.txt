@@ -1,0 +1,7 @@
+PZ-REVIZE 0.4.11
+=================
+
+- Z celkového posudku na první straně odstraněny prefixy VYHOVUJE / NEVYHOVUJE.
+- Opraveny divné znaky ve vzorci impedance: používá se U0 místo znaku s dolním indexem.
+- Hlídání termínů má pevné kompaktní sloupce, aby se text neroztahoval přes celou šířku okna.
+- Hlídání termínů přijímá i zápis měsíce a roku (např. 9.2029); pro výpočet zbývající doby se použije poslední den daného měsíce.

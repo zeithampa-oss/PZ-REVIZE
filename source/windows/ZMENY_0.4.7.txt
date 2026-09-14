@@ -1,0 +1,16 @@
+PZ-REVIZE 0.4.7 – ZMĚNY
+
+1. HROMADNÁ EDITACE MĚŘENÝCH ÚDAJŮ
+- V kartě Měření / určení přibylo tlačítko Hromadná editace.
+- Otevře tabulkový editor všech existujících měřicích bodů a měření spojitosti.
+- Měřicí body: bod, popis, U, Riso, zkušební napětí, Zs, mez Zs, Ik, výsledky a poznámka.
+- Spojitost: bod, popis, naměřená hodnota, mez, výsledek a poznámka.
+- Všechny změny se uloží jedním tlačítkem.
+
+2. AUTOMATICKÉ VYHODNOCENÍ
+- Zs + mez Zs => automatické Vyhovuje / Nevyhovuje.
+- Spojitost + mez => automatické Vyhovuje / Nevyhovuje.
+- Po hromadné úpravě se znovu přepočítá výsledek měřicího bodu i nadřazeného obvodu.
+
+3. ROZSAH
+- RCD a SPD/varistory zůstávají v této verzi ve specializovaných formulářích, protože mají odlišnou strukturu měření.

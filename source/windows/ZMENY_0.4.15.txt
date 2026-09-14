@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.15
+=================
+
+- Kompletní tabulka měření je seřazena po skupinách L–PE, L–N, L–PEN a L–L.
+- Opraveno pojetí kombinovaného chrániče RCBO: jde o proudový chránič a jistič v jednom přístroji.
+- Po výběru RCBO se přímo ve formuláři zobrazí stejná kompletní tabulka měřicích bodů jako u běžného obvodu.
+- Měřicí body RCBO se ukládají jako podřízené řádky kombinovaného chrániče a lze je znovu společně upravit.
+- Celkový výsledek RCBO zahrnuje výsledek části RCD i všechny podřízené výsledky impedance a izolace.
+- Samostatný chybný souhrnný blok impedance/Riso z verze 0.4.14 byl odstraněn.

@@ -1,0 +1,6 @@
+PZ-REVIZE 0.4.9
+
+- Automatické vyhodnocení impedance používá U0 z naměřeného napětí U konkrétního měřicího bodu.
+- Pokud U není zadáno, použije se jmenovitá hodnota 230 V.
+- Fázové dvojice L1-L2, L2-L3 a L1-L3 jsou vedeny pouze jako izolační měření; program u nich nepovoluje Zs, mez Zs, Ik ani U a staré nesmyslné hodnoty při přepočtu odstraní.
+- Celkový posudek na první straně PDF: Vyhovuje = zelený podklad, Nevyhovuje = červený podklad, Nehodnoceno = šedý.

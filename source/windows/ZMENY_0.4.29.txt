@@ -1,0 +1,17 @@
+PZ-REVIZE 0.4.29 – vnější vlivy
+
+- Prošel jsem pracovní číselník všech skupin vnějších vlivů AA–CB a opravil / rozšířil návrhy opatření podle nahraného normového podkladu a dodaného vzorového protokolu.
+- BA4 – poučené osoby: doplněn požadavek, že zařízení nechráněná před nebezpečným dotykem živých částí jsou přípustná jen v místech přístupných řádně pověřeným osobám; obsluha a práce musí odpovídat rozsahu poučení.
+- BA5 – osoby znalé: obdobně doplněn požadavek na přístup a odbornou elektrotechnickou kvalifikaci.
+- Opatření / požadavky jsou editovatelné pro všechny vlivy, které je vyžadují; vedle abnormálních tříd jsou z praktických důvodů zahrnuty i BA2–BA5.
+- Kontrola prostoru upozorní na prázdné nebo záměrně neuzavřené položky označené „DOPLNIT“. Takový prostor lze uložit pouze po potvrzení jako K doplnění.
+- Případy závislé na konkrétním odborném posouzení (např. některé seizmické, EMC, BC4 a obecné / speciální výbušné prostředí) nejsou programem falešně uzavírány univerzálním textem.
+- Výstupní matice PDF je znovu ve stylu dodaného vzoru: velká tabulka přes téměř celou šířku stránky, svislé názvy vlivů, samostatný řádek kódů AA–CB, podlaží / celek, číslo a název místnosti a sloupec Opatření.
+- Kódy, ke kterým je přiřazeno opatření, jsou v matici zvýrazněny tučně; odkazy na opatření jsou v samostatném sloupci.
+- Doplňková historická opatření používají označení D1, D2... a nekolidují s automatickým číslováním opatření k jednotlivým VV.
+- Dialog místnosti VV se automaticky přizpůsobuje dostupné velikosti obrazovky. Spodní tlačítka jsou rezervována mimo rolovatelný obsah a zůstávají dostupná i při menším rozlišení / zvětšeném DPI.
+- Ověřeno při simulovaném rozlišení 1366×768 a 1280×720.
+- Automatické testy: 23/23 úspěšně.
+
+DŮLEŽITÉ:
+Nahraný soubor ČSN 33 2000-5-51, ze kterého lze přímo číst normový text, je vydání 2000. Program proto vede opatření jako editovatelné pracovní návrhy a u nejednoznačných případů vyžaduje doplnění. Definitivní kontrolu proti skutečnému znění ČSN 33 2000-5-51 ed.3 + Z1 + Z2 je nutné provést po dodání tohoto znění.

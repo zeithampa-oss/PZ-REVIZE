@@ -1,0 +1,8 @@
+PZ-REVIZE 0.3.3.1
+===================
+
+OPRAVA SESTAVENÍ EXE
+--------------------
+- Opraven pád zabalené aplikace: ModuleNotFoundError: reportlab.graphics.barcode.code93.
+- VYTVORIT_EXE.bat nově používá PyInstaller s --collect-submodules reportlab.graphics.barcode a explicitním hidden importem code93.
+- Čárový kód Code 128 na první straně zůstává zachován.

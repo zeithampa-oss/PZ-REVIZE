@@ -1,0 +1,21 @@
+PZ-REVIZE 0.4.22
+
+VNĚJŠÍ VLIVY – PŘESTAVBA MODULU
+- Zadávání jedné místnosti / prostoru je nově řešeno jako checklist, ne jako formulář s comboboxy.
+- Checklist je rozdělen na A – podmínky prostředí, B – využití objektu a C – konstrukci budovy.
+- U většiny parametrů se vybírá právě jedna třída; u AM a BA lze označit více současně působících tříd.
+- Každá volba zobrazuje stručnou charakteristiku, požadavek pro zařízení a odkaz na zdrojovou tabulku.
+- Výsledná matice AA–CB se z checklistu vytvoří automaticky a zůstává kompatibilní s importem/exportem XLSX.
+- Doplněny třídy BE2N1 až BE2N3 a BE3N1 až BE3N3; odstraněna nepodložená AL3.
+- Doplněno orientační krytí pro AE4 až AE6.
+- Opravena pomocná klasifikace AA4/AA5 a AB4/AB5 tak, aby nebyly automaticky označovány jako abnormální.
+
+PROTOKOL VV
+- Pro vnější vlivy se generuje samostatný protokol místo obecného vzhledu revizní zprávy.
+- První strana je přepracována podle dodaného vzoru: horní hlavička, logo, číslo protokolu, Majitel, Provozovatel, Objekt, Předseda a členové komise s podpisovými linkami a spodní tabulka Datum / Revize č. / strana / Počet příloh.
+- Do technických údajů přibyla pole Majitel, Provozovatel, Revize č., Předseda komise, Členové komise, Popis budovy, Podklady a Rozsah prostor.
+- Další strany mají samostatnou strukturu pro VV: popis budovy, podklady, normy, tabulky místností po podlažích a opatření.
+
+NORMOVÝ PODKLAD
+- Pracovní checklist je svázán s nahraným souborem ČSN 33 2000-5-51, který je v knihovně ve vydání z roku 2000, a s dodaným vzorovým protokolem ed.3+Z1+Z2.
+- Program tuto skutečnost v editoru transparentně uvádí. Po dodání skutečného znění ed.3+Z1+Z2 lze číselník aktualizovat bez změny databáze místností.
