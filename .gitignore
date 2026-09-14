@@ -1,0 +1,13 @@
+**/__pycache__/
+**/*.pyc
+**/.venv/
+windows/build/
+windows/dist/
+windows/*.spec
+android/.gradle/
+android/.tools/
+android/local.properties
+android/app/build/
+*.db
+*.db-shm
+*.db-wal

@@ -1,0 +1,72 @@
+name: Build PZ-REVIZE
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows EXE
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract Windows source
+        shell: pwsh
+        run: Expand-Archive -Path PZ_REVIZE_WINDOWS_0.4.35_SOURCE.zip -DestinationPath build/windows -Force
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: build/windows/requirements-build.txt
+      - name: Install dependencies
+        run: python -m pip install -r requirements-build.txt
+        working-directory: build/windows
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+        working-directory: build/windows
+      - name: Build EXE
+        shell: cmd
+        working-directory: build/windows
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onefile --windowed
+          --collect-submodules "reportlab.graphics.barcode"
+          --hidden-import "reportlab.graphics.barcode.code93"
+          --name "PZ_REVIZE_WINDOWS_0.4.35"
+          --icon "pzrevize\resources\pz_revize.ico"
+          --add-data "pzrevize\resources;pzrevize\resources"
+          app.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.35
+          path: build/windows/dist/PZ_REVIZE_WINDOWS_0.4.35.exe
+          if-no-files-found: error
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract Android source
+        run: mkdir -p build/android && unzip -q PZ_REVIZE_ANDROID_0.5.1_TABLET_SOURCE.zip -d build/android
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Build APK
+        run: gradle --no-daemon clean assembleDebug
+        working-directory: build/android
+      - name: Name APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG.apk
+        working-directory: build/android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG
+          path: build/android/PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG.apk
+          if-no-files-found: error
