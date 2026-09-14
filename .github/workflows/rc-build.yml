@@ -41,6 +41,8 @@ jobs:
           PY
           git apply --check /tmp/final_fix.patch
           git apply /tmp/final_fix.patch
+          git apply --check tools/android_compile_fix.patch
+          git apply tools/android_compile_fix.patch
       - name: Install Windows test dependencies
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
@@ -111,6 +113,8 @@ jobs:
           python -c "import base64,gzip,pathlib; pathlib.Path('final_fix.patch').write_bytes(gzip.decompress(base64.b64decode(pathlib.Path('final_fix.b64').read_bytes())))"
           git apply --check final_fix.patch
           git apply final_fix.patch
+          git apply --check tools/android_compile_fix.patch
+          git apply tools/android_compile_fix.patch
       - name: Install build dependencies
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
