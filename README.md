@@ -8,7 +8,7 @@ Zdrojové projekty a automatická sestavení programu PZ-REVIZE.
 
 Po každém zápisu do větve `main` GitHub Actions spustí testy a vytvoří:
 
-- `PZ_REVIZE_WINDOWS_0.4.35.exe`
+- `PZ_REVIZE_WINDOWS_0.4.35_PORTABLE.zip` (rozbalit celý ZIP a spustit EXE uvnitř)
 - `PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG.apk`
 
 Hotové soubory jsou k dispozici u posledního běhu **Actions → Build PZ-REVIZE → Artifacts**.
