@@ -1,0 +1,7 @@
+PZ-REVIZE 0.4.17
+=================
+
+- V PDF revizní zprávě je pod každou jednotlivou závadou samostatné potvrzení jejího odstranění.
+- Řádek obsahuje pole „Odstranil“, „Datum“ a „Podpis“ s místem pro ruční vyplnění.
+- Potvrzení se zobrazuje pouze ve výstupní zprávě; nepřidává žádná pole do formuláře ani databáze.
+- Závada a její potvrzovací řádek jsou při stránkování drženy pohromadě.

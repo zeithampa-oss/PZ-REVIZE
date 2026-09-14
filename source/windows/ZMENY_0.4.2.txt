@@ -1,0 +1,13 @@
+PZ-REVIZE 0.4.2
+
+SÍTĚ / NAPÁJENÍ
+- dvě samostatné tabulky jsou nově pod sebou přes celou šířku okna
+- odstraněno zavádějící vizuální párování sítě a zdroje podle pořadí řádků
+- přidány vysvětlující popisy, přesnější názvy sloupců a posuvníky
+- dialog sítě nyní uvádí příklad jmenovitého napětí včetně jednotky a kmitočtu
+
+PDF
+- sekce „Sítě / soustavy a zdroje napájení“ zůstává společná jako kapitola, ale obsahuje dva samostatné bloky
+- údaje o síti a zdroji se již neslučují do jednoho řádku
+
+Databáze zůstává beze změny a verze je zpětně kompatibilní s 0.4.1.

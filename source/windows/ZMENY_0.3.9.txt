@@ -1,0 +1,25 @@
+PZ-REVIZE 0.3.9 – STRUKTURA MĚŘENÍ A STROJNÍ ZAŘÍZENÍ
+======================================================
+
+ELEKTRO – vícefázové obvody
+- Jeden jistič / obvod může mít libovolný počet podřízených měřicích bodů.
+- Nové tlačítko „+ Měřicí bod“ přidá např. L1–PE, L2–PE, L3–PE, N–PE nebo vlastní dvojici.
+- Tlačítko „+ L1/L2/L3“ vytvoří pod vybraným obvodem tři prázdné fáze najednou.
+- Každý měřicí bod má vlastní Riso, Zs, mez Zs, Ik, zkušební napětí a vyhodnocení.
+- Jištění a kabel se zapisují jen na nadřazeném obvodu a v PDF se u jednotlivých fází neopakují.
+- Struktura může být RCD -> obvod -> jednotlivé měřicí body.
+- Kopie staré revize zachová strukturu a názvy bodů, ale naměřené hodnoty vymaže.
+
+STROJ
+- Rozšířené technické údaje: druh zařízení, výrobce, typ, výrobní a inventární číslo, rok výroby, CE, Pn, In, napájení a řídicí napětí.
+- Doplněn stav zařízení při revizi, změny od předchozí revize a popis / způsob napojení.
+- Na první straně PDF je samostatný blok „Identifikace strojního zařízení“.
+- Měření stroje je nově hierarchické: skupina -> měření / funkční zkoušky.
+- Tlačítko „Předvyplnit základní strukturu“ vytvoří přívod, ochranný obvod, izolaci, automatické odpojení, řídicí obvody, pohony a funkční zkoušky.
+- Funkční zkoušky mají samostatný typ řádku; předvyplní se hlavní vypínač, nadproudové ochrany, chování po ztrátě napětí, nouzové zastavení a bezpečnostní/koncové spínače.
+- Do databáze byly přidány rychlé textové vzory pro zdvihací zařízení a obecné omezení rozsahu revize stroje.
+- Pro ELEKTRO je v databázi rychlý text pro instalace provedené před souborem ČSN 33 2000.
+- Ex/DOPV ani speciální logika prostorů s nebezpečím výbuchu do běžné šablony STROJ přidána nebyla.
+
+NAS/VPN
+- NAS/VPN synchronizace z 0.3.8 zůstává zachována; změna nevyžaduje nový NAS server.

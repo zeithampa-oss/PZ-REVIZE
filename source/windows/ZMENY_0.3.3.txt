@@ -1,0 +1,10 @@
+PZ-REVIZE 0.3.3
+
+- přepracovaná první strana podle vzorové revize uživatele
+- číslo zprávy tučně vpravo nahoře + Code 128 čárový kód + malé základní logo
+- z první strany odstraněn text rozsahu osvědčení a dlouhý text rozsahu oprávnění
+- na první straně zůstávají úplné identifikační údaje RT včetně čísel osvědčení a oprávnění
+- celkový posudek posunut níže a první strana lépe využívá A4
+- razítko a podpis mají samostatné sloupce a samostatné linky
+- potvrzení převzetí je samostatná tabulka s vlastním záhlavím
+- opraven skloňovaný název „ZPRÁVA O PRAVIDELNÉ / MIMOŘÁDNÉ REVIZI“

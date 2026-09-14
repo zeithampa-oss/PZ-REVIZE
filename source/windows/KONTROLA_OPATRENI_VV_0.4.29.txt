@@ -1,0 +1,21 @@
+KONTROLA OPATŘENÍ VNĚJŠÍCH VLIVŮ – PZ-REVIZE 0.4.29
+
+Kontrola pokrývá skupiny AA, AB, AC, AD, AE, AF, AG, AH, AK, AL, AM, AN, AP, AQ, AR, AS, BA, BC, BD, BE, CA a CB.
+
+Princip programu:
+- pro každý zvolený vliv, který vyžaduje opatření / zvláštní požadavek, vznikne samostatná editovatelná položka;
+- opatření lze změnit pro konkrétní místnost;
+- prázdné opatření nebo text začínající „DOPLNIT“ je považován za neuzavřený;
+- do matice se tiskne pouze číslo opatření, celé znění je v samostatné kapitole;
+- BA2–BA5 jsou zahrnuty mezi vlivy s editovatelným požadavkem i tehdy, když jejich klasifikace není v konkrétním pracovním profilu označena jako „abnormální“.
+
+Položky ponechané záměrně k individuálnímu doplnění:
+- AM-4 – neustálené napětí: konkrétní opatření podle charakteru rušení a požadované EMC odolnosti;
+- AP2, AP3, AP4 – seizmické účinky: konkrétní opatření podle stavebního / seizmického posouzení;
+- BA3 – osoby se sníženými schopnostmi: podle povahy omezení osob a způsobu užívání prostoru;
+- BC4 – trvalý kontakt osob s potenciálem země: individuální ochranné opatření;
+- BE3 – obecné nebezpečí výbuchu: doplnit konkrétní druh atmosféry, zónu a požadavky na zařízení;
+- BE3N3 – výbušniny: specializované posouzení podle konkrétní technologie a předpisů.
+
+Poznámka ke zdroji:
+Nahraný čitelný soubor ČSN 33 2000-5-51 je vydání 2000, nikoli ed.3 + Z1 + Z2. Proto se číselník opatření nesmí považovat za náhradu odborného posouzení ani za definitivní přepis aktuální normy.

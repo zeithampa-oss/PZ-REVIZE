@@ -1,0 +1,14 @@
+PZ-REVIZE 0.3.8 – POUČENÍ PODLE DRUHU REVIZE
+==============================================
+
+- Záložka „Poučení“ je nyní samostatná.
+- Každý typ dokumentu má vlastní vestavěnou šablonu: ELEKTRO, LPS, STROJ a VNEJSI.
+- U nové nebo prázdné revize se odpovídající text automaticky předvyplní.
+- Text je uložen přímo u konkrétní revize a lze jej libovolně editovat.
+- „Obnovit výchozí“ vrátí původní vestavěnou šablonu pro daný typ.
+- Upravený text lze uložit jako vlastní šablonu daného typu a později znovu načíst.
+- PDF zachovává číslování a víceřádkové odstavce z editoru; nadpis poučení se mění podle typu revize.
+- Stávající revize s vlastním uloženým poučením se při otevření nepřepisují.
+- NAS/VPN synchronizace z verze 0.3.7 zůstává beze změny.
+
+Poznámka: přednastavené poučení je pracovní šablona. Revizní technik odpovídá za jeho konečné znění a může jej v každé zprávě upravit podle skutečného zařízení, dokumentace a aktuálně použitelných předpisů.

@@ -1,0 +1,12 @@
+PZ-REVIZE 0.3.6
+================
+
+- Přidána NAS synchronizace pro PZ-REVIZE NAS SERVER 1.0.0.
+- V levém panelu je nové tlačítko "NAS synchronizace".
+- Nastavuje se adresa serveru a API klíč.
+- Funkce Ověřit NAS zobrazí verzi serveru, generaci, integritu databáze a počty revizí/zákazníků.
+- Odeslat na NAS přenese konzistentní SQLite snapshot a všechny dohledané přílohy/fotografie/razítko/podpis.
+- Stáhnout z NAS předem vytvoří kompletní lokální ZIP zálohu DB + příloh a až potom lokální stav nahradí.
+- Synchronizace používá číslo generace. Starší PC nemůže bez upozornění přepsat novější stav na NAS.
+- NAS adresa a API klíč se do sdílené databáze nevkládají; zůstávají lokální pro daný počítač.
+- Stávající funkce PZ-REVIZE 0.3.5 zůstávají zachované.

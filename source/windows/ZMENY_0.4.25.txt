@@ -1,0 +1,10 @@
+PZ-REVIZE 0.4.25
+
+- Modul Vnější vlivy: hlavní záložka „Protokol / komise“ přejmenována na „Obecné“.
+- Obecné je nyní stránkově uspořádané: Titulní strana, strana 2 – Popis, strana 3, strana 4 a strana 5.
+- Text pod názvem protokolu na titulní straně je plně editovatelný; výchozí jsou tři řádky dle dodaného vzoru.
+- Popis objektu využívá celou stranu 2 a podporuje odrážky i číslování.
+- Strany 3–5 jsou plně editovatelné přes velké textové plochy, rovněž s odrážkami a číslováním.
+- Strana 3 umí jedním tlačítkem vložit aktuální podklady a normy z ostatních záložek.
+- PDF rezervuje strany 2–5 pro obecnou část; vlastní velké vysvětlující tabulky VV začínají až od strany 6.
+- Zachována kompatibilita se staršími daty special_json.

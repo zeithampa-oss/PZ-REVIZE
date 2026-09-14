@@ -1,0 +1,7 @@
+PZ-REVIZE 0.3.4
+
+- Razítko je větší a sdílí jeden společný prostor s podpisem revizního technika.
+- Číslování stran je ve formátu Strana X / Y.
+- Nová část Poučení pro provozovatele; text je editovatelný a lze jej ukládat mezi naučené vzory.
+- Nová část Seznam příloh; vzniká automaticky z Podklady / přílohy a z fotodokumentace závad.
+- Seznam příloh se tiskne do revizní zprávy před vlastními přílohami.

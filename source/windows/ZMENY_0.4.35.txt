@@ -1,0 +1,6 @@
+PZ-REVIZE 0.4.35 – nové revize a nový protokol VV
+
+- Karta Vnější vlivy používá správné tlačítko „Nový VV“.
+- Na přehledu jsou samostatně dostupné nové revize elektro, stroje a LPS i nový VV.
+- Stejné čtyři volby jsou dostupné také v detailu zákazníka.
+- Bezpečná automatická synchronizace a ochrana lokálních revizí z verze 0.4.34 zůstávají zachovány.

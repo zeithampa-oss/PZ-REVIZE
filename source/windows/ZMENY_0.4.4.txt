@@ -1,0 +1,20 @@
+PZ-REVIZE 0.4.4 – ZMĚNY
+
+1. Závady
+- Přidána klasifikace C1 / C2 / C3.
+- C1 – existující nebezpečí.
+- C2 – potenciálně nebezpečné.
+- C3 – doporučuje se zlepšení.
+- Pole je dostupné u vlastní závady, závady ze závadovníku i závady vytvořené z prohlídky.
+- Původní pole „Kategorie“ je v dialogu přejmenováno na „Oblast / skupina“.
+
+2. Výstup
+- Kategorie C1/C2/C3 je samostatný sloupec v tabulce závad v PDF.
+- Kategorie se zobrazí i v titulku fotografie závady.
+
+3. Kontrola výsledku
+- C3 může zůstat jako doporučení bez automatického blokování kladného posudku.
+- Neodstraněná C1/C2 nebo neklasifikovaná závada při výsledku „Vyhovuje“ vyvolá upozornění.
+
+4. Kompatibilita
+- Starší databáze se automaticky doplní o sloupec defect_class bez ztráty dat.

@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.23
+
+- Pro modul Vnější vlivy je editor zjednodušen na 5 potřebných kroků: Základní údaje, Protokol / komise, Normy / předpisy, Podklady / přílohy, Vnější vlivy.
+- Skryty byly záložky určené pro revizní zprávu: sítě/napájení, ochrany, dokumentace, prohlídka, závady, pracovní fotografie, přístroje, poučení a závěr.
+- Základní údaje VV už neobsahují příští revizi, třídu VTZ ani celkový výsledek revize.
+- Podklady VV mají vlastní text a tlačítko „Přidat podklad / přílohu“.
+- Uložení protokolu VV se již neptá na potvrzení, že nebyly zjištěny závady.
+- Kontrola protokolu VV kontroluje údaje objektu, komisi, místnosti a základní normu.
+- Ostatní typy revizí zůstaly beze změny.

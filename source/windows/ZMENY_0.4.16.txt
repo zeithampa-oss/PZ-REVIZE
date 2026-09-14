@@ -1,0 +1,7 @@
+PZ-REVIZE 0.4.16
+=================
+
+- V přehledu elektrických měření byly odstraněny grafické rozbalovací čtverečky.
+- Hierarchie je nově vyznačena běžnými znaky: podřízený řádek „>“ a druhá úroveň „>>“.
+- Stejné označení se používá také v PDF revizní zprávě.
+- Znaky jsou zvoleny kvůli spolehlivému zobrazení ve Windows i ve vložených PDF fontech.

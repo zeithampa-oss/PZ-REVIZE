@@ -1,0 +1,10 @@
+PZ-REVIZE 0.4.3 – ZMĚNY
+========================
+
+- Jedna tabulka pro zdroje napájení a napěťové soustavy.
+- Normalizovaný zápis podle ČSN EN IEC 61293 ed. 2 / IEC 61293.
+- Příklad: Cizí distribuční síť | EG.D, a.s. | 3/PEN AC 230/400 V 50 Hz / TN-C-S | hlavní přívod objektu.
+- Specializovaný editor skládá označení z uspořádání vodičů, AC/DC, napětí, kmitočtu a druhu sítě.
+- Kontrola zjevně chybných kombinací TN-S/PEN a TN-C/N+PE.
+- PDF používá stejnou jednu tabulku.
+- Zpětná kompatibilita se staršími revizemi je zachována bez automatického párování historických řádků podle pořadí.

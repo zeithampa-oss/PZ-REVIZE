@@ -1,0 +1,7 @@
+PZ-REVIZE 0.4.10
+=================
+
+- Upraven výstup impedance poruchové smyčky v PDF do stručné odborné podoby.
+- Použit vztah: Zsm ≤ 2/3 × U₀ / Ia (bezpečnostní součinitel km = 1,5).
+- Doplněn stručný význam veličin a automatická závěrečná věta Vyhovuje / Nevyhovuje podle měření.
+- Odstraněn dlouhý technický popis způsobu výpočtu programu.

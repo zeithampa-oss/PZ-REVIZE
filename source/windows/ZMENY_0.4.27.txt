@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.27
+
+- Vnější vlivy: každý abnormální vnější vliv má automaticky samostatné dohledatelné opatření/požadavek odvozený z pracovního normového číselníku.
+- PDF: abnormální vlivy dostávají automatická čísla opatření; úplné znění opatření se tiskne v samostatné kapitole mimo hlavní tabulku.
+- Doplňková ručně číslovaná opatření zůstávají zachována odděleně.
+- Obecné: podkarta „Obecné“ je nyní jen prázdné velké textové pole pro popis celé budovy/areálu s podporou odrážek a číslování.
+- Staré předvyplněné vzorové strany 2–5 se už do Obecných ani do PDF automaticky nevkládají.
+- Normy / předpisy: všechny normy vybrané na kartě se nově vždy vypisují do samostatné kapitoly výsledného protokolu.
+- Popis posuzovaného objektu a popisy jednotlivých místností zůstávají samostatné textové části mimo tabulky.

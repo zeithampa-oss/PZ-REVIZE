@@ -1,71 +1,47 @@
-name: Build PZ-REVIZE
+name: Build fixed PZ-REVIZE
 
 on:
   push:
-    branches: [main]
+    branches: [fix/tablet-vv-sync-numbering]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  windows:
-    name: Windows EXE
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Join Windows source archive
-        shell: pwsh
-        run: |
-          $output = [System.IO.File]::Create("PZ_REVIZE_WINDOWS_SOURCE_JOINED.zip")
-          Get-ChildItem "PZ_REVIZE_WINDOWS_0.4.35_SOURCE.part.*" | Sort-Object Name | ForEach-Object {
-            $input = [System.IO.File]::OpenRead($_.FullName)
-            $input.CopyTo($output)
-            $input.Dispose()
-          }
-          $output.Dispose()
-      - name: Extract Windows source
-        shell: pwsh
-        run: New-Item -ItemType Directory -Force build/windows | Out-Null; tar -xf PZ_REVIZE_WINDOWS_SOURCE_JOINED.zip -C build/windows
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: pip
-          cache-dependency-path: build/windows/requirements-build.txt
-      - name: Install dependencies
-        run: python -m pip install -r requirements-build.txt
-        working-directory: build/windows
-      - name: Run tests
-        run: python -m unittest discover -s tests -v
-        working-directory: build/windows
-      - name: Build EXE
-        shell: cmd
-        working-directory: build/windows
-        run: >-
-          python -m PyInstaller --noconfirm --clean --onedir --windowed
-          --collect-submodules "reportlab.graphics.barcode"
-          --hidden-import "reportlab.graphics.barcode.code93"
-          --name "PZ_REVIZE_WINDOWS_0.4.35"
-          --icon "pzrevize\resources\pz_revize.ico"
-          --add-data "pzrevize\resources;pzrevize\resources"
-          app.py
-      - name: Create portable ZIP
-        shell: pwsh
-        working-directory: build/windows
-        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.35/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.35_PORTABLE.zip" -Force
-      - uses: actions/upload-artifact@v4
-        with:
-          name: PZ_REVIZE_WINDOWS_0.4.35_PORTABLE
-          path: build/windows/PZ_REVIZE_WINDOWS_0.4.35_PORTABLE.zip
-          if-no-files-found: error
-
-  android:
-    name: Android APK
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract Android source
-        run: mkdir -p build/android && unzip -q PZ_REVIZE_ANDROID_0.5.1_TABLET_SOURCE.zip -d build/android
+        with:
+          ref: fix/tablet-vv-sync-numbering
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Apply tablet, VV, numbering and sync fixes
+        run: python tools/apply_tablet_fixes.py
+      - name: Commit fixed sources
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add source/android tools/apply_tablet_fixes.py
+          if git diff --cached --quiet; then
+            echo "No new source changes."
+          else
+            git commit -m "Opravy tabletu: VV checklist, automatické číslování, měření a sync"
+            git push origin HEAD:fix/tablet-vv-sync-numbering
+          fi
+
+  android:
+    name: Android 0.5.2 tablet APK
+    needs: patch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tablet-vv-sync-numbering
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -74,13 +50,53 @@ jobs:
         with:
           gradle-version: "8.9"
       - name: Build APK
+        working-directory: source/android
         run: gradle --no-daemon clean assembleDebug
-        working-directory: build/android
       - name: Name APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG.apk
-        working-directory: build/android
+        working-directory: source/android
+        run: cp app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG
-          path: build/android/PZ_REVIZE_MOBILE_0.5.1_TABLET_DEBUG.apk
+          name: PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG
+          path: source/android/PZ_REVIZE_MOBILE_0.5.2_TABLET_DEBUG.apk
+          if-no-files-found: error
+
+  windows:
+    name: Windows 0.4.36 portable
+    needs: patch
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tablet-vv-sync-numbering
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: source/windows/requirements-build.txt
+      - name: Install dependencies
+        working-directory: source/windows
+        run: python -m pip install -r requirements-build.txt
+      - name: Run tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Build EXE
+        shell: cmd
+        working-directory: source/windows
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir --windowed
+          --collect-submodules "reportlab.graphics.barcode"
+          --hidden-import "reportlab.graphics.barcode.code93"
+          --name "PZ_REVIZE_WINDOWS_0.4.36"
+          --icon "pzrevize\resources\pz_revize.ico"
+          --add-data "pzrevize\resources;pzrevize\resources"
+          app.py
+      - name: Create portable ZIP
+        shell: pwsh
+        working-directory: source/windows
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.36/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.36_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip
           if-no-files-found: error

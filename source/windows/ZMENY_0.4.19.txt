@@ -1,0 +1,22 @@
+PZ-REVIZE 0.4.19
+
+VNĚJŠÍ VLIVY
+- Přepracován typ revize VNEJSI na místnostní matici AA až CB podle ČSN 33 2000-5-51 ed. 3+Z1+Z2.
+- Přidán samostatný editor místnosti: podlaží, číslo a název, klasifikace prostoru, 22 tříd vnějších vlivů, opatření a poznámka.
+- AJ a BB jsou v nápovědě označeny jako nepoužívané v dodaném formátu tabulky; matice odpovídá sloupcům dodaného souboru D1.
+- Přidány rychlé profily: vytápěný/nevytápěný vnitřní prostor, chladicí a mrazicí box, prostor se stříkající vodou, venkovní prostor, venkovní rozvodny/střechy, prostor s nebezpečím požáru a elektrická provozovna.
+- Přidán číselník opatření 1 až 10 podle dodaného souhrnného protokolu.
+- Program nabízí konzervativní návrhy opatření, ale nepřepisuje určení automaticky.
+- U BE2 program upozorní na nesoulad v dodaném vzoru: řádek odkazuje na opatření 10, zatímco seznam opatření 10 popisuje nabíjení elektrických vozidel.
+
+IMPORT / EXPORT
+- Přímý import XLSX z listů jednotlivých podlaží.
+- Ověřeno na dodaném souboru Tabulka_mistnosti_D1.xlsx: 13 listů a 707 prostorů.
+- Export zpět do XLSX, po podlažích, s maticí AA–CB, opatřeními, stavem a poznámkou.
+
+DATABÁZE A PDF
+- Databáze zachovává staré sloupce vnějších vlivů a přidává místnost, podlaží, JSON matice, opatření a pořadí.
+- Starší jednotlivé řádky kódů se při otevření sloučí do kompatibilního záznamu, aby se data neztratila.
+- Kopie pravidelné revize zachová strukturu místností a klasifikaci k novému ověření.
+- PDF zobrazuje matici po podlažích a pod ní pouze skutečně použitá opatření.
+- Základní norma ČSN 33 2000-5-51 ed. 3+Z1+Z2 se u typu VNEJSI automaticky přidá do snapshotu norem, pokud tam ještě není.

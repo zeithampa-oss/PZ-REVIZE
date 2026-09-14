@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.21
+
+- Přidáno tlačítko „+ Poznámka“ do struktury elektrických měření.
+- Poznámka je samostatný řádek typu NOTE a používá stávající pole note, takže není nutná změna databázového schématu.
+- Poznámku lze vložit na kořen tabulky, pod RCD/RCBO nebo pod konkrétní obvod podle aktuálního výběru.
+- Řádek poznámky lze dvojklikem / tlačítkem Upravit změnit, přesouvat šipkami a smazat.
+- PDF vykreslí poznámku jako samostatný řádek přes celou šířku tabulky.
+- Stejná funkce byla doplněna i do měření strojních zařízení.
+- Při klonování revize se textové řádky NOTE zachovají; naměřené hodnoty se nadále nulují.

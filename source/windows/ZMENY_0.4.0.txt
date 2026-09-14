@@ -1,0 +1,13 @@
+PZ-REVIZE 0.4.0
+
+MĚŘENÍ ELEKTRO
+- Obvod je nově pouze společná hlavička: označení, název, rozvaděč, jištění, kabel, poznámka.
+- Naměřené hodnoty se přidávají pod obvod ručně po jednom tlačítkem + Měření.
+- Odstraněno automatické tlačítko + L1/L2/L3. Počet měření není omezen na tři řádky.
+- Celkový výsledek obvodu se počítá automaticky z podřízených měření.
+- Měřicí bod počítá vlastní celkový stav z impedance a izolace. Zs se při zadané mezní hodnotě porovnává automaticky.
+- PDF netiskne stejné měření znovu na řádku obvodu, pokud existují podřízené měřicí body.
+
+RCD
+- Dynamický popis typu AC / A / F / B / B+.
+- Vysvětlení významu vybavovacího proudu, času, Uc, polarit +/− a společných zkoušek.

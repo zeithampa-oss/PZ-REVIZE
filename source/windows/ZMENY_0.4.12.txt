@@ -1,0 +1,9 @@
+PZ-REVIZE 0.4.12
+=================
+
+- Zvětšeno pole Rozsah revize a doplněn svislý posuvník.
+- Přepracován formulář měření proudových chráničů: průběhy AC/A/F/B jsou vždy v jednom bloku pod hlavičkou.
+- Viditelně rozlišeny Vybavovací proud IΔ [mA], Čas vybavení [ms] a Dotykové napětí Uc [V].
+- Opraveno chybné umístění řádků AC+/AC− pod poznámkou.
+- Doplněna informativní hodnota 5× IΔn v mA podle zadaného IΔn.
+- Tabulka měření má levé zarovnání záhlaví a pevné šířky sloupců, aby hlavičky odpovídaly obsahu.

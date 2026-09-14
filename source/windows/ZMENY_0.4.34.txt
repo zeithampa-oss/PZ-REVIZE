@@ -1,0 +1,12 @@
+PZ-REVIZE 0.4.34 – ochrana lokálních revizí při práci na dvou PC
+
+1. Ruční stažení celé DB má stejný nevynechatelný bezpečnostní filtr jako automatické stažení: odmítne se, pokud NAS neobsahuje všechny lokální změny. Záloha původní DB vznikne před stažením.
+2. Kontrola lokálního stavu se opakuje těsně před atomickou výměnou DB, pod zámkem sdíleným se zápisy do lokální DB.
+3. Otevře-li se během stahování editor revize, operace se odloží. Po zavření editoru lze synchronizaci zopakovat.
+4. Odeslání na NAS označí za synchronní pouze skutečně odeslaný snímek; nově uložené položky zůstávají čekající.
+5. Při porovnání se nyní počítají také dokumenty katalogu a neprivátní nastavení. Poškozený NAS balík s chybějícími přílohami se automaticky nestáhne.
+6. NAJIT_REVIZI_V_ZALOHACH.bat prochází místní DB a dosavadní zálohy, nic nepřepisuje.
+
+POZOR: Samostatné nové revize na dvou PC se při souběžné práci automaticky neslučují. Program zobrazí konflikt a oba původní stavy zachová. Pro vyřešení konfliktu nevolit ruční stažení celé DB; nejdřív uložit obě databáze a sloučit data kontrolovaně.
+
+Kontrola: automatické testy v adresáři tests, včetně vytvoření nové revize během stahování a během odesílání. Sestavení Windows EXE a běh s reálným NAS musí být ověřeny na uživatelově počítači.

@@ -1,0 +1,19 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'cz.pzrevize.mobile'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'cz.pzrevize.mobile'
+        minSdk 26
+        targetSdk 35
+        versionCode 11
+        versionName '0.5.1-tablet'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

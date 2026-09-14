@@ -1,0 +1,29 @@
+PZ-REVIZE 0.4.20
+
+VNĚJŠÍ VLIVY – PLNÉ ZAČLENĚNÍ
+- Modul Vnější vlivy je součástí hlavního PZ-REVIZE a používá stejnou databázi zakázek/revizí.
+- Zůstává zachován vstup z hlavní nabídky „Vnější vlivy“ a typ dokumentu VNEJSI.
+- Jedna místnost / prostor = jeden záznam s maticí AA až CB.
+- Zachovány profily prostorů, import a export XLSX a číselník opatření.
+
+POMOCNÉ VYHODNOCENÍ
+- Editor průběžně zobrazuje stav NORMÁLNÍ / ABNORMÁLNÍ / K DOPLNĚNÍ.
+- U abnormálního prostoru vypíše rozhodující kódy vnějších vlivů.
+- Z kódů AD a AE zobrazí orientační minimální požadavek na krytí.
+- Při uložení se obecné hodnoty „URČENO“ / „K DOPLNĚNÍ“ nahradí aktuálním pomocným vyhodnocením.
+- Ručně zadané konkrétní zařazení se nepřepisuje bezdůvodně; při rozporu editor upozorní.
+
+SKUPINA AM
+- Rozšířen výběr elektromagnetických, elektrostatických a ionizujících vlivů.
+- Zachována kompatibilita se staršími zkrácenými hodnotami AM1-2 / AM1-3 z existujících protokolů.
+
+PDF PROTOKOLU
+- V první straně je „ČÍSLO PROTOKOLU“ a „STAV PROTOKOLU“, nikoli celkový posudek revize.
+- Terminologie převzetí a podpisového bloku je přizpůsobena protokolu vnějších vlivů.
+- Netiskne se seznam měřicích přístrojů ani věta o třídě VTZ.
+- Tisknou se údaje: podklad protokolu, komise, rozsah posuzovaných prostor a doplňující poznámky.
+- Matice místností a použitá opatření zůstávají součástí výstupu.
+
+NORMOVÝ PODKLAD
+- Modul pracuje s označením ČSN 33 2000-5-51 ed. 3 + Z1 + Z2 a se snapshotem norem uloženým k dokumentu.
+- Text normy se do aplikace nekopíruje; v programu jsou pracovní číselníky, kódy a pomocné kontroly.

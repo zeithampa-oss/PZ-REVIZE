@@ -1,0 +1,68 @@
+AUDIT MODULU VNĚJŠÍ VLIVY – PZ-REVIZE 0.4.32
+=============================================
+
+Podklad auditu
+--------------
+ČSN 33 2000-5-51 ed.3 + Z1 + Z2, konsolidované vydání červenec 2022,
+příloha ZA, zejména tabulka ZA.1 – Charakteristiky vnějších vlivů.
+
+Rozsah
+------
+Kontrolovány pracovní skupiny používané modulem PZ-REVIZE:
+AA, AB, AC, AD, AE, AF, AG, AH, AK, AL, AM, AN, AP, AQ, AR, AS,
+BA, BC, BD, BE, CA, CB. AJ a BB jsou ve výstupu ponechány pouze informativně,
+protože tabulka ZA.1 jim nedává samostatně volitelné třídy.
+
+Hlavní opravy proti 0.4.31
+-------------------------
+1. Normální / výchozí hodnoty
+   - AA4 a AA5: normální.
+   - AB4 a AB5: normální.
+   - AD1: v ČR považován za normální.
+   - AE1: v ČR považován za normální.
+   - AQ1 a AQ2: normální podle podmínek tabulky / posouzení rizika.
+   - BC2: v ČR považován za normální.
+   - Výchozí vytápěný profil používá AQ2 a BC2.
+
+2. Kódy
+   - Elektromagnetické vlivy AM používají zápis AM-1-2, AM-22-3 atd.
+   - BE používá aktuální BE1 až BE4.
+   - Staré pracovní BE2N1 až BE3N3 nejsou nabízeny v novém checklistu.
+
+3. Opatření / pracovní požadavky
+   - AA: odstraněny staré obecné požadavky IP20; nyní odpovídá tabulce ZA.1
+     (speciálně navržené zařízení / vhodná úprava tam, kde je požadována).
+   - AB: odstraněny staré univerzální požadavky IP21; ponechány pouze pracovní
+     formulace odpovídající kombinaci teploty a vlhkosti v ZA.1.
+   - AD: požadované krytí IPX0 až IPX8 podle třídy.
+   - AE: požadované krytí IP0X, IP3X, IP4X, IP5X/IP6X podle třídy.
+   - AF: opatření podle povahy a četnosti působení korozivních / znečišťujících látek.
+   - AG/AH: průmyslové / speciálně navržené zařízení nebo zesílená ochrana podle závažnosti.
+   - AK/AL: ochrana proti rostlinstvu, plísním a živočichům podle variant uvedených v ZA.1.
+   - AM: texty srovnány s jednotlivými řádky ZA.1, str. 25–26.
+   - AN: vhodná ochrana proti slunečnímu / UV záření u AN2/AN3.
+   - AP: AP2–AP4 označeny jako případy, kde se konkrétní opatření zvažuje.
+   - AQ: AQ2 není automaticky abnormální; AQ3 vyžaduje řešení přímého ohrožení bleskem.
+   - AR/AS: u vyšších rychlostí požadována vhodná opatření.
+   - BA: BA4 opraven na osoby poučené nebo pracující pod dohledem osoby znalé;
+     BA5 zachovává požadavek omezeného přístupu u zařízení nechráněných před přímým dotykem.
+   - BC: BC2 výslovně normální v ČR; BC3/BC4 vyžadují posouzení podle charakteru kontaktu.
+   - BD: odstraněny staré automatické požadavky na materiály s omezeným šířením plamene,
+     které současná tabulka ZA.1 přímo nepřiřazuje všem BD2–BD4; opatření se váže na PBŘ
+     a související předpisy konkrétního objektu.
+   - BE: BE2 požár, BE3 výbuch, BE4 kontaminace dle aktuálního členění.
+   - CA/CB: srovnáno s tabulkou ZA.1, str. 30.
+
+Zásada programu
+---------------
+Normový návrh v programu je stručná pracovní formulace. U konkrétní místnosti jej lze
+upravit. Program nemá nahrazovat odborné rozhodnutí komise / projektanta / revizního
+technika a u případů, kde tabulka požaduje individuální posouzení, nevytváří falešně
+přesné univerzální opatření.
+
+Ověření
+-------
+Automatické testy: 28/28 OK.
+Kontrolní PDF: tabulky bez přesahu tiskové plochy A4.
+Rychlé profily: uložení / načtení OK.
+Kopírování místnosti: zachování hodnot VV a individuálních opatření.

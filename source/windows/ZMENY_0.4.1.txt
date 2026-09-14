@@ -1,0 +1,26 @@
+PZ-REVIZE 0.4.1
+================
+
+MĚŘENÍ ELEKTRO
+- + Měření -> volba jednoho bodu nebo hromadného vícefázového zadání.
+- Hromadná tabulka: L1-PE, L2-PE, L3-PE, L1-N, L2-N, L3-N, L1-L2, L2-L3, L1-L3.
+- Sloupce: U [V], Riso [MΩ], Zs [Ω], mez Zs [Ω], Ik [A], Výsledek, Poznámka.
+- Každý použitý řádek se uloží jako samostatný POINT pod vybraný obvod.
+- Výsledek hromadného řádku je standardně Vyhovuje; Zs + mez se při uložení automaticky vyhodnotí.
+- Jednotlivý bod má nově také U [V].
+
+SPOJITOST
+- + Spojitost se při vybraném obvodu uloží jako jeho podřízené měření.
+- Je možné přidat libovolný počet bodů spojitosti pod jeden prvek / obvod.
+- Každý bod má vlastní označení, popis místa, hodnotu, mez a vyhodnocení.
+- Bez vybraného obvodu zůstává spojitost samostatným řádkem jako dříve.
+- Výsledek obvodu agreguje POINT i CONTINUITY řádky.
+
+ZOBRAZENÍ / PDF
+- Hodnoty se zobrazují s jednotkami V, MΩ, Ω a A.
+- PDF tabulka má samostatné U a sloučené technické sloupce Riso/Rp a Zs/Ik.
+- Spojitosti pod obvodem se tisknou přímo pod daný obvod.
+
+ZAVÍRÁNÍ
+- Zavření revize křížkem nebo Esc kontroluje neuložené změny.
+- Při změnách je volba Uložit / Neuložit / Zrušit zavření.
