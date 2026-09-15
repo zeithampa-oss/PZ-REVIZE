@@ -1,0 +1,60 @@
+name: Build PZ-REVIZE Android 0.5.4
+
+on:
+  push:
+    branches: [android-0.5.4-tereni-prace]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android 0.5.4 tablet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: android-0.5.4-tereni-prace
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Prepare release source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/final_fix.patch.gz.b64.part.* > /tmp/final_fix.b64
+          python - <<'PY'
+          import base64,gzip,pathlib
+          raw=base64.b64decode(pathlib.Path('/tmp/final_fix.b64').read_bytes())
+          pathlib.Path('/tmp/final_fix.patch').write_bytes(gzip.decompress(raw))
+          PY
+          git apply --check /tmp/final_fix.patch
+          git apply /tmp/final_fix.patch
+          python tools/apply_android_054.py
+      - name: Build APK
+        working-directory: source/android
+        run: gradle --no-daemon clean assembleDebug
+      - name: Name APK
+        working-directory: source/android
+        run: cp app/build/outputs/apk/debug/app-debug.apk PZ_REVIZE_MOBILE_0.5.4_TABLET_DEBUG.apk
+      - name: Pack Android source
+        shell: bash
+        run: |
+          find source/android -type d -name __pycache__ -prune -exec rm -rf {} + || true
+          find source/android -type f -name '*.pyc' -delete || true
+          (cd source/android && zip -qr ../../PZ_REVIZE_ANDROID_0.5.4_SOURCE.zip .)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_MOBILE_0.5.4_TABLET_DEBUG
+          path: source/android/PZ_REVIZE_MOBILE_0.5.4_TABLET_DEBUG.apk
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_ANDROID_0.5.4_SOURCE
+          path: PZ_REVIZE_ANDROID_0.5.4_SOURCE.zip
+          if-no-files-found: error
