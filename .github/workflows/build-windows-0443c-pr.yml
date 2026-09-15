@@ -35,7 +35,7 @@ jobs:
           $r = 'result = pull_from_nas(db, base_url, token, can_pull=can_pull, allow_unchanged_local=True)'
           $s = $s.Substring(0, $j) + $s.Substring($j).Replace($c, $r, 1)
           Set-Content -Path $p -Value $s -Encoding UTF8
-          python tools/install_new_sync_0500.py
+          python tools/install_new_sync_051.py
       - name: Version
         shell: pwsh
         working-directory: source/windows
