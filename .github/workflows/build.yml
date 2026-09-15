@@ -2,7 +2,7 @@ name: Build PZ-REVIZE
 
 on:
   push:
-    branches: [main]
+    branches: [main, fix/pc-nas-initial-pull-0.4.42]
   workflow_dispatch:
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
           if-no-files-found: error
 
   windows:
-    name: Windows 0.4.36 portable
+    name: Windows 0.4.42 portable
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +46,8 @@ jobs:
       - name: Install dependencies
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
+      - name: Apply Windows 0.4.42 fix
+        run: python tools/fix_windows_nas_initial_pull_0442.py
       - name: Run tests
         working-directory: source/windows
         run: python -m unittest discover -s tests -v
@@ -56,16 +58,16 @@ jobs:
           python -m PyInstaller --noconfirm --clean --onedir --windowed
           --collect-submodules "reportlab.graphics.barcode"
           --hidden-import "reportlab.graphics.barcode.code93"
-          --name "PZ_REVIZE_WINDOWS_0.4.36"
+          --name "PZ_REVIZE_WINDOWS_0.4.42"
           --icon "pzrevize\resources\pz_revize.ico"
           --add-data "pzrevize\resources;pzrevize\resources"
           app.py
       - name: Create portable ZIP
         shell: pwsh
         working-directory: source/windows
-        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.36/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip" -Force
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.42/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.42_PORTABLE.zip" -Force
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_WINDOWS_0.4.36_PORTABLE
-          path: source/windows/PZ_REVIZE_WINDOWS_0.4.36_PORTABLE.zip
+          name: PZ_REVIZE_WINDOWS_0.4.42_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.42_PORTABLE.zip
           if-no-files-found: error
