@@ -1,4 +1,4 @@
-name: Build Windows 0.5.0 PR
+name: Build Windows 0.5.1 PR
 on:
   pull_request:
     branches: [main]
@@ -37,19 +37,19 @@ jobs:
       - name: Version
         shell: pwsh
         working-directory: source/windows
-        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35|0.4.44","0.5.0" | Set-Content tests/test_standard_catalog.py
+        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35|0.4.44|0.5.0","0.5.1" | Set-Content tests/test_standard_catalog.py
       - name: Tests
         working-directory: source/windows
         run: python -m unittest discover -s tests -v
       - name: Build
         shell: cmd
         working-directory: source/windows
-        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.5.0" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
+        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.5.1" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
       - name: Zip
         shell: pwsh
         working-directory: source/windows
-        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.5.0/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.5.0_PORTABLE.zip" -Force
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.5.1/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.5.1_PORTABLE.zip" -Force
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_WINDOWS_0.5.0_PORTABLE
-          path: source/windows/PZ_REVIZE_WINDOWS_0.5.0_PORTABLE.zip
+          name: PZ_REVIZE_WINDOWS_0.5.1_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.5.1_PORTABLE.zip
