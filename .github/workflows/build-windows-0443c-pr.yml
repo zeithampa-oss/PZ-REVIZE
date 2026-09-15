@@ -1,5 +1,7 @@
 name: Build Windows 0.5.1 PR
 on:
+  push:
+    branches: [build-test-0443]
   pull_request:
     branches: [main]
 permissions:
