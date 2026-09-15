@@ -1,9 +1,8 @@
-name: Build Windows 0.5.1 PR
+name: Build Windows 0.4.44
 on:
   push:
     branches: [build-test-0443]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -17,7 +16,7 @@ jobs:
       - name: Install
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
-      - name: Apply new synchronization
+      - name: Apply previous fixes
         shell: pwsh
         run: |
           python tools/fix_windows_nas_initial_pull_0442.py
@@ -35,23 +34,24 @@ jobs:
           $r = 'result = pull_from_nas(db, base_url, token, can_pull=can_pull, allow_unchanged_local=True)'
           $s = $s.Substring(0, $j) + $s.Substring($j).Replace($c, $r, 1)
           Set-Content -Path $p -Value $s -Encoding UTF8
-          python tools/install_new_sync_051.py
-      - name: Version
+      - name: Apply 0.4.44 merge fix
+        run: python tools/fix_windows_nas_sync_0444.py
+      - name: Version tests
         shell: pwsh
         working-directory: source/windows
-        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35|0.4.44|0.5.0","0.5.1" | Set-Content tests/test_standard_catalog.py
+        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35","0.4.44" | Set-Content tests/test_standard_catalog.py
       - name: Tests
         working-directory: source/windows
         run: python -m unittest discover -s tests -v
       - name: Build
         shell: cmd
         working-directory: source/windows
-        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.5.1" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
+        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.4.44" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
       - name: Zip
         shell: pwsh
         working-directory: source/windows
-        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.5.1/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.5.1_PORTABLE.zip" -Force
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.44/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.44_PORTABLE.zip" -Force
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_WINDOWS_0.5.1_PORTABLE
-          path: source/windows/PZ_REVIZE_WINDOWS_0.5.1_PORTABLE.zip
+          name: PZ_REVIZE_WINDOWS_0.4.44_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.44_PORTABLE.zip
