@@ -1,4 +1,4 @@
-name: Build PZ-REVIZE 0.4.37 / 0.5.3 / NAS 1.0.3
+name: Build PZ-REVIZE 0.4.38 / 0.5.3 / NAS 1.0.3
 
 on:
   push:
@@ -43,6 +43,8 @@ jobs:
           git apply /tmp/final_fix.patch
           git apply --check tools/android_compile_fix.patch
           git apply tools/android_compile_fix.patch
+          git apply --check tools/manual_pull_force_0438.patch
+          git apply tools/manual_pull_force_0438.patch
       - name: Install Windows test dependencies
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
@@ -71,7 +73,7 @@ jobs:
           find source -type d -name __pycache__ -prune -exec rm -rf {} + || true
           find source -type f -name '*.pyc' -delete || true
           (cd source/android && zip -qr ../../PZ_REVIZE_ANDROID_0.5.3_SOURCE.zip .)
-          (cd source/windows && zip -qr ../../PZ_REVIZE_WINDOWS_0.4.37_SOURCE.zip .)
+          (cd source/windows && zip -qr ../../PZ_REVIZE_WINDOWS_0.4.38_SOURCE.zip .)
       - uses: actions/upload-artifact@v4
         with:
           name: PZ_REVIZE_MOBILE_0.5.3_TABLET_DEBUG
@@ -84,14 +86,14 @@ jobs:
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_SOURCES_0.4.37_0.5.3
+          name: PZ_REVIZE_SOURCES_0.4.38_0.5.3
           path: |
             PZ_REVIZE_ANDROID_0.5.3_SOURCE.zip
-            PZ_REVIZE_WINDOWS_0.4.37_SOURCE.zip
+            PZ_REVIZE_WINDOWS_0.4.38_SOURCE.zip
           if-no-files-found: error
 
   windows:
-    name: Windows 0.4.37 portable
+    name: Windows 0.4.38 portable
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -115,6 +117,8 @@ jobs:
           git apply final_fix.patch
           git apply --check tools/android_compile_fix.patch
           git apply tools/android_compile_fix.patch
+          git apply --check tools/manual_pull_force_0438.patch
+          git apply tools/manual_pull_force_0438.patch
       - name: Install build dependencies
         working-directory: source/windows
         run: python -m pip install -r requirements-build.txt
@@ -128,16 +132,16 @@ jobs:
           python -m PyInstaller --noconfirm --clean --onedir --windowed
           --collect-submodules "reportlab.graphics.barcode"
           --hidden-import "reportlab.graphics.barcode.code93"
-          --name "PZ_REVIZE_WINDOWS_0.4.37"
+          --name "PZ_REVIZE_WINDOWS_0.4.38"
           --icon "pzrevize\resources\pz_revize.ico"
           --add-data "pzrevize\resources;pzrevize\resources"
           app.py
       - name: Create portable ZIP
         shell: pwsh
         working-directory: source/windows
-        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.37/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.37_PORTABLE.zip" -Force
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.38/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.38_PORTABLE.zip" -Force
       - uses: actions/upload-artifact@v4
         with:
-          name: PZ_REVIZE_WINDOWS_0.4.37_PORTABLE
-          path: source/windows/PZ_REVIZE_WINDOWS_0.4.37_PORTABLE.zip
+          name: PZ_REVIZE_WINDOWS_0.4.38_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.38_PORTABLE.zip
           if-no-files-found: error
