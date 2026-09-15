@@ -27,6 +27,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf source/nas
+          mkdir -p source/nas
+          unzip -q PZ_REVIZE_NAS_SERVER_1.0.2_SOURCE.zip -d source/nas
           cat tools/final_fix.patch.gz.b64.part.* > /tmp/final_fix.b64
           python - <<'PY'
           import base64,gzip,pathlib
