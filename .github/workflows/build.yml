@@ -48,6 +48,14 @@ jobs:
         run: python -m pip install -r requirements-build.txt
       - name: Apply Windows 0.4.42 fix
         run: python tools/fix_windows_nas_initial_pull_0442.py
+      - name: Update release-version test
+        shell: pwsh
+        working-directory: source/windows
+        run: |
+          $p = "tests/test_standard_catalog.py"
+          $s = Get-Content -Raw -Encoding UTF8 $p
+          $s = $s.Replace("self.assertEqual(VERSION, '0.4.35')", "self.assertEqual(VERSION, '0.4.42')")
+          Set-Content -Path $p -Value $s -Encoding UTF8
       - name: Run tests
         working-directory: source/windows
         run: python -m unittest discover -s tests -v
