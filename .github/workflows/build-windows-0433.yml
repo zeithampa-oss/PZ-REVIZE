@@ -26,6 +26,8 @@ jobs:
         run: python tools/fix_windows_nas_initial_pull_0442.py
       - name: Apply Windows 0.4.43 sequential sync fix
         run: python tools/fix_windows_nas_sync_0443.py
+      - name: Apply trusted unchanged-local pull fix
+        run: python tools/fix_windows_nas_pull_trusted_0443.py
       - name: Update release-version test
         shell: pwsh
         working-directory: source/windows
