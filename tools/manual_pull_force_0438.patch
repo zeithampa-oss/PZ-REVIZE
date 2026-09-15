@@ -1,0 +1,93 @@
+--- a/source/windows/app.py
++++ b/source/windows/app.py
+@@ -53,7 +53,7 @@
+ )
+ 
+ APP_TITLE = "PZ-REVIZE"
+-VERSION = "0.4.37"
++VERSION = "0.4.38"
+ 
+ ELECTRICAL_INSPECTION_TEMPLATE_GROUPS = (
+     "NV 190/2022 Sb. – příloha č. 1, část A",
+@@ -5209,16 +5209,17 @@
+         if not messagebox.askyesno(
+             "Stáhnout kompletní DB z NAS",
+             "Stáhnout CELÝ centrální stav z NAS do tohoto počítače?\n\n"
+-            "Aktuální lokální databáze a přílohy budou předem zazálohovány. "
+-            "Pokud je v tomto PC revize nebo jiná změna, která na NAS není, stažení se zastaví a lokální data zůstanou zachována.\n\n"
+-            "Jinak budou DB, fotografie, přílohy, razítko a podpis nahrazeny stavem z NAS.\n\n"
++            "Aktuální lokální databáze a přílohy budou předem KOMPLETNĚ zazálohovány.\n\n"
++            "PO POTVRZENÍ bude pracovní databáze tohoto PC nahrazena stavem z NAS, i když toto PC obsahuje vlastní neodeslané změny. "
++            "Tyto změny zůstanou pouze v automaticky vytvořené záloze.\n\n"
++            "DB, fotografie, přílohy, razítko a podpis budou nahrazeny stavem z NAS.\n\n"
+             "Po dokončení bude program pracovat s touto lokální kopií i bez připojení k NAS.",
+             parent=self,
+         ):
+             return
+         try:
+             url, transport, _ = self._resolve(timeout=8)
+-            result = pull_from_nas(self.db, url, self.token_var.get().strip())
++            result = pull_from_nas(self.db, url, self.token_var.get().strip(), force_replace=True)
+             nas_set_setting(self.db, "nas_last_transport", transport)
+             self.app.refresh_all()
+             self._refresh_state()
+--- a/source/windows/pzrevize/nas_sync.py
++++ b/source/windows/pzrevize/nas_sync.py
+@@ -395,7 +395,7 @@
+     return bundle
+ 
+ 
+-def pull_from_nas(db, base_url: str, token: str, can_pull=None) -> dict:
++def pull_from_nas(db, base_url: str, token: str, can_pull=None, force_replace: bool = False) -> dict:
+     sync_before = get_sync_settings(db)
+     temp_zip = _new_temp_path("PZ_REVIZE_PULL_", ".zip")
+     stage = Path(tempfile.mkdtemp(prefix="pzrev_sync_pull_"))
+@@ -429,7 +429,7 @@
+             if can_pull is not None and not can_pull():
+                 raise NasSyncError("Během stahování byla otevřena revize; nahrazení lokální databáze bylo odloženo.")
+             relation = compare_database_states(db.path, db_in)
+-            if relation["relation"] not in ("remote_superset", "equal"):
++            if not force_replace and relation["relation"] not in ("remote_superset", "equal"):
+                 raise NasConflictError(
+                     "Stažení z NAS zablokováno: v tomto PC jsou změny, které NAS neobsahuje. "
+                     "Lokální revize zůstaly zachovány; před stažením je nutné konflikt vyřešit."
+@@ -479,6 +479,8 @@
+             "local_attachments": str(local_att),
+             "counts": counts,
++            "forced_replace": bool(force_replace),
++            "previous_relation": relation.get("relation") if 'relation' in locals() else None,
+         }
+     finally:
+         try:
+--- a/source/windows/tests/test_standard_catalog.py
++++ b/source/windows/tests/test_standard_catalog.py
+@@ -10,7 +10,7 @@
+ class StandardCatalogTests(unittest.TestCase):
+     def test_release_version(self):
+-        self.assertEqual(VERSION, '0.4.37')
++        self.assertEqual(VERSION, '0.4.38')
+ 
+     def test_complete_measurement_point_order(self):
+         self.assertEqual(COMPLETE_MEASUREMENT_POINTS[:4], ['L1-PE', 'L2-PE', 'L3-PE', 'L1-N'])
+--- a/source/windows/tests/test_nas_sync_safety.py
++++ b/source/windows/tests/test_nas_sync_safety.py
+@@ -121,6 +121,22 @@
+         self.assertTrue(list((data_dir / 'backups').glob('*.zip')))
+ 
++    def test_manual_force_pull_replaces_local_state_but_keeps_backup(self):
++        remote = self.copy('server.db')
++        bundle = self.remote_bundle(remote)
++        self.db.execute("INSERT INTO revisions(revision_no,revision_type,subject) VALUES(?,?,?)",
++                        ('R-LOCAL-FORCE', 'ELEKTRO', 'Lokální změna před ruční obnovou'))
++        data_dir = self.tmp / 'appdata'; (data_dir / 'backups').mkdir(parents=True)
++        with patch('pzrevize.nas_sync.app_data_dir', return_value=data_dir), \
++             patch('pzrevize.nas_sync._download_bundle', side_effect=lambda u,t,d: (shutil.copy2(bundle,d),8)[1]):
++            result = pull_from_nas(self.db, 'http://nas', 'token', force_replace=True)
++        self.assertIsNone(self.db.fetchone("SELECT id FROM revisions WHERE revision_no='R-LOCAL-FORCE'"))
++        self.assertTrue(result.get('forced_replace'))
++        self.assertEqual(result.get('previous_relation'), 'local_superset')
++        self.assertTrue(list((data_dir / 'backups').glob('*.zip')))
++
+     def test_local_edit_during_download_blocks_pull(self):
+         remote = self.copy('server.db')
+         bundle = self.remote_bundle(remote)
