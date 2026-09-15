@@ -1,0 +1,41 @@
+name: Build Windows 0.4.43b
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        working-directory: source/windows
+        run: python -m pip install -r requirements-build.txt
+      - name: Base sync
+        run: python tools/fix_windows_nas_initial_pull_0442.py
+      - name: Sequential sync
+        run: python tools/fix_windows_nas_sync_0443.py
+      - name: Tests version
+        shell: pwsh
+        working-directory: source/windows
+        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35","0.4.43" | Set-Content tests/test_standard_catalog.py
+      - name: Tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Build
+        shell: cmd
+        working-directory: source/windows
+        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.4.43" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
+      - name: Zip
+        shell: pwsh
+        working-directory: source/windows
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.43/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.43_PORTABLE.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.43_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.43_PORTABLE.zip
