@@ -22,31 +22,27 @@ class NewSyncMergeTests(unittest.TestCase):
                 "INSERT INTO circuits(revision_id,designation,name,result) VALUES(?,?,?,?)",
                 (rid, "Q1", title, "VYHOVUJE"),
             )
-            return rid
 
     def test_independent_revisions_are_unioned_both_directions(self):
-        with tempfile.TemporaryDirectory() as td:
-            root = Path(td)
+        root = Path(tempfile.mkdtemp(prefix="pz_sync_test_"))
+        try:
             a = self._db(root, "a.db")
             b = self._db(root, "b.db")
             self._revision(a, "A", "Revize A")
             self._revision(b, "B", "Revize B")
-
-            # A receives B without losing A.
-            with sqlite3.connect(b.path) as cb:
-                pass
             self.assertTrue(_pz0500_copy_revision(a.path, b.path, "B"))
             with sqlite3.connect(a.path) as ca:
                 self.assertEqual({r[0] for r in ca.execute("SELECT revision_no FROM revisions")}, {"A", "B"})
-
-            # B receives A without losing B.
             self.assertTrue(_pz0500_copy_revision(b.path, a.path, "A"))
             with sqlite3.connect(b.path) as cb:
                 self.assertEqual({r[0] for r in cb.execute("SELECT revision_no FROM revisions")}, {"A", "B"})
+        finally:
+            import shutil
+            shutil.rmtree(root, ignore_errors=True)
 
     def test_same_revision_is_not_copied_over_existing(self):
-        with tempfile.TemporaryDirectory() as td:
-            root = Path(td)
+        root = Path(tempfile.mkdtemp(prefix="pz_sync_test_"))
+        try:
             a = self._db(root, "a.db")
             b = self._db(root, "b.db")
             self._revision(a, "A", "Local")
@@ -54,10 +50,13 @@ class NewSyncMergeTests(unittest.TestCase):
             self.assertFalse(_pz0500_copy_revision(a.path, b.path, "A"))
             with sqlite3.connect(a.path) as ca:
                 self.assertEqual(ca.execute("SELECT subject FROM revisions WHERE revision_no='A'").fetchone()[0], "Local")
+        finally:
+            import shutil
+            shutil.rmtree(root, ignore_errors=True)
 
     def test_compare_detects_independent_revisions(self):
-        with tempfile.TemporaryDirectory() as td:
-            root = Path(td)
+        root = Path(tempfile.mkdtemp(prefix="pz_sync_test_"))
+        try:
             a = self._db(root, "a.db")
             b = self._db(root, "b.db")
             self._revision(a, "A", "A")
@@ -65,3 +64,6 @@ class NewSyncMergeTests(unittest.TestCase):
             result = compare_database_states(a.path, b.path)
             self.assertEqual(set(result["local_only_revisions"]), {"A"})
             self.assertEqual(set(result["remote_only_revisions"]), {"B"})
+        finally:
+            import shutil
+            shutil.rmtree(root, ignore_errors=True)
