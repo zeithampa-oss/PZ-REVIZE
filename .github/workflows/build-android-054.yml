@@ -38,7 +38,7 @@ jobs:
           PY
           git apply --check /tmp/final_fix.patch
           git apply /tmp/final_fix.patch
-          python tools/apply_android_054.py
+          python tools/apply_android_054b.py
       - name: Build APK
         working-directory: source/android
         run: gradle --no-daemon clean assembleDebug
