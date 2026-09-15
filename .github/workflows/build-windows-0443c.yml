@@ -1,0 +1,55 @@
+name: Build Windows 0.4.43c
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        working-directory: source/windows
+        run: python -m pip install -r requirements-build.txt
+      - name: Apply sync fixes
+        shell: pwsh
+        run: |
+          python tools/fix_windows_nas_initial_pull_0442.py
+          python tools/fix_windows_nas_sync_0443.py
+          $p = "source/windows/pzrevize/nas_sync.py"
+          $s = Get-Content -Raw -Encoding UTF8 $p
+          $s = $s.Replace('def pull_from_nas(db, base_url: str, token: str, can_pull=None) -> dict:', 'def pull_from_nas(db, base_url: str, token: str, can_pull=None, allow_unchanged_local: bool = False) -> dict:')
+          $s = $s.Replace('if relation["relation"] not in ("remote_superset", "equal"):', 'if relation["relation"] not in ("remote_superset", "equal") and not allow_unchanged_local:')
+          $m = 'if server_generation > local_generation and last_signature and local_signature == last_signature:'
+          $i = $s.IndexOf($m)
+          if ($i -lt 0) { throw "marker not found" }
+          $c = 'result = pull_from_nas(db, base_url, token, can_pull=can_pull)'
+          $j = $s.IndexOf($c, $i)
+          if ($j -lt 0) { throw "call not found" }
+          $r = 'result = pull_from_nas(db, base_url, token, can_pull=can_pull, allow_unchanged_local=True)'
+          $s = $s.Substring(0, $j) + $s.Substring($j).Replace($c, $r, 1)
+          Set-Content -Path $p -Value $s -Encoding UTF8
+      - name: Version
+        shell: pwsh
+        working-directory: source/windows
+        run: (Get-Content tests/test_standard_catalog.py -Raw) -replace "0.4.35","0.4.43" | Set-Content tests/test_standard_catalog.py
+      - name: Tests
+        working-directory: source/windows
+        run: python -m unittest discover -s tests -v
+      - name: Build
+        shell: cmd
+        working-directory: source/windows
+        run: python -m PyInstaller --noconfirm --clean --onedir --windowed --collect-submodules "reportlab.graphics.barcode" --hidden-import "reportlab.graphics.barcode.code93" --name "PZ_REVIZE_WINDOWS_0.4.43" --icon "pzrevize\resources\pz_revize.ico" --add-data "pzrevize\resources;pzrevize\resources" app.py
+      - name: Zip
+        shell: pwsh
+        working-directory: source/windows
+        run: Compress-Archive -Path "dist/PZ_REVIZE_WINDOWS_0.4.43/*" -DestinationPath "PZ_REVIZE_WINDOWS_0.4.43_PORTABLE.zip" -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_WINDOWS_0.4.43_PORTABLE
+          path: source/windows/PZ_REVIZE_WINDOWS_0.4.43_PORTABLE.zip
