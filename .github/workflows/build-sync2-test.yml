@@ -1,0 +1,36 @@
+name: Build PZ-REVIZE SYNC 2.0 test
+on:
+  workflow_dispatch:
+  push:
+    branches: [sync-v2]
+permissions:
+  contents: read
+jobs:
+  windows-sync2:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run SYNC 2.0 tests
+        run: python -m unittest discover -s sync_v2 -p "test_*.py" -v
+      - name: Install PyInstaller
+        run: python -m pip install pyinstaller
+      - name: Build client EXE
+        run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name PZ_REVIZE_SYNC2_TEST_CLIENT sync_v2/test_client_gui.py
+      - name: Build server EXE
+        run: python -m PyInstaller --noconfirm --clean --onefile --console --name PZ_REVIZE_SYNC2_TEST_SERVER sync_v2/test_server.py
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path sync2_package | Out-Null
+          Copy-Item dist/PZ_REVIZE_SYNC2_TEST_CLIENT.exe sync2_package/
+          Copy-Item dist/PZ_REVIZE_SYNC2_TEST_SERVER.exe sync2_package/
+          Copy-Item sync_v2/README_TEST.md sync2_package/README_TEST.md
+          Compress-Archive -Path sync2_package/* -DestinationPath PZ_REVIZE_SYNC2_TEST_WINDOWS.zip -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PZ_REVIZE_SYNC2_TEST_WINDOWS
+          path: PZ_REVIZE_SYNC2_TEST_WINDOWS.zip
+          if-no-files-found: error
