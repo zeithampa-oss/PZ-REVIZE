@@ -3,7 +3,10 @@ import json, sqlite3, threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
-from .core import Change, ChangeKind, SyncEngine
+try:
+    from .core import Change, ChangeKind, SyncEngine
+except ImportError:
+    from core import Change, ChangeKind, SyncEngine
 
 DB_PATH = Path(__file__).with_name("sync_test_server.sqlite3")
 SCHEMA = """
