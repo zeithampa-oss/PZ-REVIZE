@@ -8,6 +8,7 @@ permissions:
 jobs:
   windows-sync2:
     runs-on: windows-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
